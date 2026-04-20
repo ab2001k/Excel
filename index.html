@@ -11,7 +11,8 @@
 
     <style>
         :root {
-            --primary: #6366f1; /* Vibrant Indigo */
+            /* Default Indigo Theme */
+            --primary: #6366f1; 
             --primary-light: #818cf8;
             --primary-bg: #e0e7ff;
             --surface: #ffffff;
@@ -19,7 +20,7 @@
             --text: #0f172a;
             --text-light: #64748b;
             --border: #e2e8f0;
-            --today-ring: #f43f5e; /* Rose */
+            --today-ring: #f43f5e;
             --danger: #ef4444;
             --success: #10b981;
             --note-mark: #f59e0b;
@@ -27,32 +28,38 @@
 
         /* Anti-copy native feel */
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; user-select: none; -webkit-user-drag: none; }
-        input, textarea { user-select: text; } 
+        input, textarea, select { user-select: text; } 
         
-        body { background-color: var(--bg); color: var(--text); padding: 20px; overflow-x: hidden;}
+        body { background-color: var(--bg); color: var(--text); padding: 20px; overflow-x: hidden; transition: background-color 0.3s;}
         .dashboard { max-width: 1200px; margin: 0 auto; }
 
         /* Branding & Header */
         .header-section { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 25px; border-bottom: 2px solid var(--border); padding-bottom: 15px; }
         .logo-area { display: flex; align-items: center; gap: 15px; }
-        .logo-icon { background: linear-gradient(135deg, #6366f1, #a855f7); color: white; width: 55px; height: 55px; border-radius: 14px; display: flex; justify-content: center; align-items: center; font-size: 28px; font-weight: bold; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); }
-        .branding h1 { font-size: 28px; font-weight: 900; background: linear-gradient(to right, #6366f1, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
-        .name-input { border: none; background: transparent; font-size: 20px; font-weight: 700; color: var(--text); width: 250px; outline: none; border-bottom: 2px dashed transparent; transition: 0.3s; margin-top: 5px;}
+        .logo-icon { background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; width: 55px; height: 55px; border-radius: 14px; display: flex; justify-content: center; align-items: center; font-size: 28px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: 0.3s;}
+        .branding h1 { font-size: 28px; font-weight: 900; color: var(--text); letter-spacing: -0.5px; }
+        .name-input { border: none; background: transparent; font-size: 20px; font-weight: 700; color: var(--primary); width: 250px; outline: none; border-bottom: 2px dashed transparent; transition: 0.3s; margin-top: 5px;}
         .name-input:focus { border-bottom: 2px dashed var(--primary-light); }
 
-        /* ID Badge */
-        .id-badge { background: var(--text); color: white; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-family: monospace; letter-spacing: 1px; cursor: pointer; transition: 0.2s;}
-        .id-badge:hover { background: var(--primary); }
-        
+        /* Sync & Theme */
+        .top-controls { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+        .theme-selector { display: flex; gap: 5px; margin-bottom: 5px;}
+        .theme-btn { width: 20px; height: 20px; border-radius: 50%; cursor: pointer; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: transform 0.2s;}
+        .theme-btn:hover { transform: scale(1.2); }
+        .sync-badge { font-size: 11px; padding: 4px 10px; border-radius: 12px; font-weight: 700; background: var(--border); color: var(--text-light); transition: 0.3s; display: flex; align-items: center; gap: 5px;}
+        .sync-badge.syncing { background: #fef3c7; color: #d97706; }
+        .sync-badge.synced { background: #d1fae5; color: #059669; }
+        .sync-badge.offline { background: #fee2e2; color: #dc2626; }
+
         /* Navigation */
         .controls-row { display: flex; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; align-items: center;}
         .nav-tabs { display: flex; gap: 8px; background: white; padding: 6px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); overflow-x: auto;}
         .tab-btn { padding: 10px 20px; border: none; background: transparent; font-size: 14px; font-weight: 600; color: var(--text-light); cursor: pointer; border-radius: 8px; transition: all 0.3s; white-space: nowrap;}
         .tab-btn.active { background: var(--primary-bg); color: var(--primary); box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);}
         
-        .btn-action { background: var(--primary); color: white; padding: 10px 18px; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3); }
-        .btn-action:hover { filter: brightness(1.1); transform: translateY(-2px); box-shadow: 0 6px 15px rgba(99, 102, 241, 0.4); }
-        .btn-export { background: linear-gradient(135deg, #f59e0b, #ea580c); box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3); display: none; } 
+        .btn-action { background: var(--primary); color: white; padding: 10px 18px; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .btn-action:hover { filter: brightness(1.1); transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.15); }
+        .btn-export { background: linear-gradient(135deg, #f59e0b, #ea580c); display: none; } 
 
         /* Views & Categories */
         .view { display: none; animation: fadeIn 0.3s ease; }
@@ -63,78 +70,86 @@
         .category-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
         .category-title { font-size: 20px; font-weight: 800; color: var(--text); display: flex; align-items: center; gap: 8px;}
         
-        /* Habit Cards (Draggable) */
+        /* Habit Cards */
         .habit-list { display: flex; flex-direction: column; gap: 12px; min-height: 50px; }
-        .habit-card { background: #f8fafc; border-radius: 12px; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; align-items: stretch; justify-content: space-between; gap: 15px; border: 1px solid #e2e8f0; transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; cursor: grab;}
-        .habit-card:active { cursor: grabbing; transform: scale(0.99); box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
+        .habit-card { background: #f8fafc; border-radius: 12px; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; align-items: stretch; justify-content: space-between; gap: 15px; border: 1px solid #e2e8f0; transition: transform 0.2s; cursor: grab;}
+        .habit-card:active { cursor: grabbing; transform: scale(0.99); }
         .habit-card.drag-over { border: 2px dashed var(--primary); background: var(--primary-bg); }
         
         .habit-info { width: 220px; flex-shrink: 0; display: flex; flex-direction: column; justify-content: center; position: relative;}
         .habit-name { font-weight: 700; font-size: 16px; color: var(--text); }
-        .goal-badge { position: absolute; top: -25px; left: 0; background: var(--success); color: white; font-size: 10px; padding: 3px 8px; border-radius: 12px; font-weight: bold; animation: pop 0.4s ease; display: none; }
+        .goal-badge { position: absolute; top: -25px; left: 0; background: var(--success); color: white; font-size: 10px; padding: 3px 8px; border-radius: 12px; font-weight: bold; display: none; }
         .goal-badge.completed { display: inline-block; }
-        @keyframes pop { 0% { transform: scale(0); } 100% { transform: scale(1); } }
 
-        /* Stats & Target Bar */
-        .habit-stats { font-size: 11px; color: var(--text-light); margin-top: 6px; display: flex; justify-content: space-between; align-items: center;}
-        .progress-bar-bg { width: 100%; height: 8px; background: #e2e8f0; border-radius: 4px; margin-top: 6px; overflow: hidden; position: relative;}
-        .progress-bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); background: linear-gradient(90deg, var(--primary), var(--primary-light));}
+        /* Progress Bar */
+        .progress-bar-bg { width: 100%; height: 8px; background: #e2e8f0; border-radius: 4px; margin-top: 6px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s; background: linear-gradient(90deg, var(--primary), var(--primary-light));}
 
         /* Grids */
         .grid-container { flex-grow: 1; display: grid; gap: 4px; }
         .grid-month { grid-template-columns: repeat(7, 1fr); }
         .grid-week { grid-template-columns: repeat(7, 1fr); gap: 10px; }
-        .grid-year { grid-template-columns: repeat(12, 1fr); font-size: 10px;}
+        .grid-year { grid-template-columns: repeat(12, 1fr); gap: 8px; justify-items: center; align-items: center;}
         
-        .day-box { position: relative; height: 35px; border-radius: 8px; background: #ffffff; border: 1px solid #cbd5e1; display: flex; justify-content: center; align-items: center; font-size: 12px; color: #94a3b8; cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); font-weight: 600; }
-        .day-box.year-box { height: 28px; flex-direction: column; }
+        .day-box { position: relative; height: 35px; border-radius: 8px; background: #ffffff; border: 1px solid #cbd5e1; display: flex; justify-content: center; align-items: center; font-size: 12px; color: #94a3b8; cursor: pointer; transition: 0.2s; font-weight: 600; }
         .day-box:hover { border-color: var(--primary); transform: scale(1.05); z-index: 5; box-shadow: 0 4px 6px rgba(0,0,0,0.05);}
         
-        /* State Colors */
-        .box-checked-1 { background: #34d399; color: white; border-color: #34d399; }
-        .box-checked-2 { background: #38bdf8; color: white; border-color: #38bdf8; }
-        .box-checked-3 { background: #c084fc; color: white; border-color: #c084fc; }
-        .box-checked-4 { background: #f472b6; color: white; border-color: #f472b6; }
-        .box-checked-5 { background: #fbbf24; color: white; border-color: #fbbf24; }
+        /* Fixed Year Box (Square & Non-Clicky) */
+        .year-box { width: 30px; height: 30px; flex-direction: column; cursor: default; border-radius: 6px; font-size: 10px;}
+        .year-box:hover { transform: none; border-color: #cbd5e1; box-shadow: none; z-index: 1;}
+
+        /* 20 Dynamic Goal Colors */
+        .color-1 { background: #ef4444 !important; color: white !important; border-color: #ef4444 !important; }
+        .color-2 { background: #f97316 !important; color: white !important; border-color: #f97316 !important; }
+        .color-3 { background: #f59e0b !important; color: white !important; border-color: #f59e0b !important; }
+        .color-4 { background: #eab308 !important; color: white !important; border-color: #eab308 !important; }
+        .color-5 { background: #84cc16 !important; color: white !important; border-color: #84cc16 !important; }
+        .color-6 { background: #22c55e !important; color: white !important; border-color: #22c55e !important; }
+        .color-7 { background: #10b981 !important; color: white !important; border-color: #10b981 !important; }
+        .color-8 { background: #14b8a6 !important; color: white !important; border-color: #14b8a6 !important; }
+        .color-9 { background: #06b6d4 !important; color: white !important; border-color: #06b6d4 !important; }
+        .color-10 { background: #0ea5e9 !important; color: white !important; border-color: #0ea5e9 !important; }
+        .color-11 { background: #3b82f6 !important; color: white !important; border-color: #3b82f6 !important; }
+        .color-12 { background: #6366f1 !important; color: white !important; border-color: #6366f1 !important; }
+        .color-13 { background: #8b5cf6 !important; color: white !important; border-color: #8b5cf6 !important; }
+        .color-14 { background: #a855f7 !important; color: white !important; border-color: #a855f7 !important; }
+        .color-15 { background: #d946ef !important; color: white !important; border-color: #d946ef !important; }
+        .color-16 { background: #ec4899 !important; color: white !important; border-color: #ec4899 !important; }
+        .color-17 { background: #f43f5e !important; color: white !important; border-color: #f43f5e !important; }
+        .color-18 { background: #64748b !important; color: white !important; border-color: #64748b !important; }
+        .color-19 { background: #78716c !important; color: white !important; border-color: #78716c !important; }
+        .color-20 { background: #0f172a !important; color: white !important; border-color: #0f172a !important; }
         
-        /* Markers */
-        .is-today { border: 2px solid var(--today-ring); font-weight: bold; transform: scale(1.05); z-index: 10; color: var(--text); box-shadow: 0 0 10px rgba(244, 63, 94, 0.3);}
+        .is-today { border: 2px solid var(--today-ring); font-weight: bold; transform: scale(1.05); z-index: 10; color: var(--text); box-shadow: 0 0 10px rgba(0,0,0,0.1);}
         .has-note::after { content: ''; position: absolute; top: -3px; right: -3px; width: 10px; height: 10px; background: var(--note-mark); border-radius: 50%; border: 2px solid white; }
         .is-start::before { content: '🚩'; position: absolute; font-size: 12px; bottom: -6px; left: -6px; filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.2));}
 
         .time-controls { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; background: white; padding: 8px; border-radius: 12px; width: fit-content; border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(0,0,0,0.04);}
         
-        /* Custom App Modals */
-        .custom-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.75); display: flex; justify-content: center; align-items: center; z-index: 2000; backdrop-filter: blur(8px); opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        /* Custom Modals */
+        .custom-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.8); display: flex; justify-content: center; align-items: center; z-index: 2000; backdrop-filter: blur(8px); opacity: 0; pointer-events: none; transition: 0.3s; }
         .custom-modal-overlay.active { opacity: 1; pointer-events: all; }
-        .custom-modal { background: white; padding: 30px; border-radius: 20px; width: 400px; max-width: 90%; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); transform: translateY(20px); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .custom-modal { background: white; padding: 30px; border-radius: 20px; width: 400px; transform: translateY(20px); transition: 0.3s; }
         .custom-modal-overlay.active .custom-modal { transform: translateY(0); }
-        .modal-title { font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 10px; }
-        .modal-input { width: 100%; padding: 12px 15px; border: 2px solid var(--border); border-radius: 10px; font-size: 15px; outline: none; margin-bottom: 15px; transition: border-color 0.2s;}
-        .modal-input:focus { border-color: var(--primary); }
-        .modal-btn-group { display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px;}
-        .modal-btn { padding: 10px 18px; border-radius: 10px; font-weight: 600; cursor: pointer; border: none; transition: 0.2s;}
-        .btn-cancel { background: #f1f5f9; color: var(--text-light); }
-        .btn-cancel:hover { background: #e2e8f0; }
+        .modal-title { font-size: 20px; font-weight: 800; margin-bottom: 10px; color: var(--text);}
+        .modal-input { width: 100%; padding: 12px 15px; border: 2px solid var(--border); border-radius: 10px; font-size: 15px; outline: none; margin-bottom: 15px; }
 
-        /* Custom Context Menu */
         .context-menu { position: absolute; background: white; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); border: 1px solid var(--border); padding: 8px; z-index: 1000; display: none; flex-direction: column; gap: 4px; min-width: 160px;}
-        .context-btn { padding: 10px 15px; border: none; background: transparent; text-align: left; font-size: 14px; font-weight: 600; color: var(--text); border-radius: 8px; cursor: pointer; transition: 0.2s;}
+        .context-btn { padding: 10px 15px; border: none; background: transparent; text-align: left; font-size: 14px; font-weight: 600; cursor: pointer; border-radius: 8px;}
         .context-btn:hover { background: var(--primary-bg); color: var(--primary); }
-        .context-btn.danger:hover { background: #fee2e2; color: var(--danger); }
 
         /* Analytics & Charts */
         .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
-        .chart-container { background: white; padding: 25px; border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+        .chart-container { background: white; padding: 25px; border-radius: 16px; border: 1px solid var(--border); }
 
-        /* Hidden PDF Container - A4 Portrait optimized */
-        #hiddenPdfTemplate { display: none; background: white; padding: 40px; color: #0f172a; width: 800px;}
+        /* Hidden PDF Container - Strict A4 sizing and forced breaks */
+        #hiddenPdfTemplate { display: none; background: white; padding: 40px; color: #0f172a; width: 800px; margin: 0 auto;}
         .pdf-header { text-align: center; margin-bottom: 30px; border-bottom: 3px solid var(--primary); padding-bottom: 20px; }
-        .pdf-ai-insight { background: linear-gradient(135deg, #f8fafc, #f1f5f9); border-left: 5px solid var(--primary); padding: 15px; border-radius: 0 12px 12px 0; margin-bottom: 25px; font-size: 14px; line-height: 1.6; }
-        .pdf-category { margin-bottom: 20px; }
-        .pdf-row { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding: 12px 0; page-break-inside: avoid;}
+        .pdf-ai-insight { background: #f8fafc; border-left: 5px solid var(--primary); padding: 15px; border-radius: 0 8px 8px 0; margin-bottom: 25px; font-size: 14px; line-height: 1.6; }
+        .pdf-category { margin-bottom: 25px; page-break-inside: avoid; }
+        .pdf-row { display: flex; flex-direction: column; border-bottom: 1px solid #e2e8f0; padding: 12px 0; page-break-inside: avoid;}
         .pdf-notes { font-size: 12px; color: #64748b; font-style: italic; margin-top: 5px; background: #f8fafc; padding: 8px; border-radius: 6px;}
-        .pdf-chart-box { text-align: center; margin-top: 20px; page-break-inside: avoid;}
+        .page-break { page-break-before: always; }
     </style>
 </head>
 <body>
@@ -144,17 +159,17 @@
         <div class="modal-title" id="modalTitle">Title</div>
         <p style="color: var(--text-light); font-size: 14px; margin-bottom: 15px;" id="modalDesc"></p>
         <div id="modalInputs"></div>
-        <div class="modal-btn-group">
-            <button class="modal-btn btn-cancel" onclick="closeModal()">Cancel</button>
-            <button class="modal-btn btn-action" id="modalConfirmBtn">Confirm</button>
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+            <button class="btn-action" style="background: #f1f5f9; color: var(--text-light);" onclick="closeModal()">Cancel</button>
+            <button class="btn-action" id="modalConfirmBtn">Confirm</button>
         </div>
     </div>
 </div>
 
 <div class="context-menu" id="contextMenu">
     <button class="context-btn" onclick="ctxAction('note')">📝 Add/Edit Note</button>
-    <button class="context-btn" onclick="ctxAction('start')">🚩 Mark as Start Date</button>
-    <button class="context-btn danger" onclick="ctxAction('clear')">🗑️ Clear Data for Day</button>
+    <button class="context-btn" onclick="ctxAction('start')">🚩 Mark Start Date</button>
+    <button class="context-btn" style="color:var(--danger)" onclick="ctxAction('clear')">🗑️ Clear Day</button>
 </div>
 
 <div class="dashboard" id="mainDashboard">
@@ -162,14 +177,19 @@
         <div class="logo-area">
             <div class="logo-icon">SG</div>
             <div class="branding">
-                <h1>Smart Goals</h1>
-                <input type="text" id="userNameInput" class="name-input" value="Abhik Dutta" onchange="saveUserName(this.value)">
-                <p>Tracker ID: <span class="id-badge" id="displayId" onclick="copyId()">AD-GOALS-01</span></p>
+                <input type="text" id="userNameInput" class="name-input" value="Abhik Dutta" onchange="markDataChanged()">
+                <p>Tracker ID: <span style="font-family:monospace; background: var(--border); padding: 2px 6px; border-radius:4px;">AD-GOALS-01</span></p>
             </div>
         </div>
-        <div style="text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
-            <button class="btn-action" onclick="syncData()">☁️ Sync Data</button>
-            <div id="syncStatus" style="font-size: 12px; color: var(--text-light); font-weight: 600;">Ready</div>
+        <div class="top-controls">
+            <div class="theme-selector">
+                <div class="theme-btn" style="background: #6366f1;" onclick="setTheme('indigo')"></div>
+                <div class="theme-btn" style="background: #10b981;" onclick="setTheme('emerald')"></div>
+                <div class="theme-btn" style="background: #8b5cf6;" onclick="setTheme('violet')"></div>
+                <div class="theme-btn" style="background: #f43f5e;" onclick="setTheme('rose')"></div>
+                <div class="theme-btn" style="background: #f59e0b;" onclick="setTheme('amber')"></div>
+            </div>
+            <div id="syncStatus" class="sync-badge synced">✔️ Synced Locally</div>
         </div>
     </div>
 
@@ -188,9 +208,9 @@
     </div>
 
     <div class="time-controls" id="timeControls">
-        <button class="btn-action" style="padding: 6px 12px; background: #f1f5f9; color: var(--text);" onclick="changeDate(-1)">◄</button>
+        <button class="btn-action" style="padding: 6px 12px; background: var(--surface); color: var(--text);" onclick="changeDate(-1)">◄</button>
         <span id="currentDateDisplay" style="font-weight: 800; width: 140px; text-align: center; color: var(--primary);">Loading...</span>
-        <button class="btn-action" style="padding: 6px 12px; background: #f1f5f9; color: var(--text);" onclick="changeDate(1)">►</button>
+        <button class="btn-action" style="padding: 6px 12px; background: var(--surface); color: var(--text);" onclick="changeDate(1)">►</button>
         <button class="btn-action" style="padding: 6px 12px;" onclick="resetToToday()">Today</button>
     </div>
 
@@ -200,14 +220,8 @@
     
     <div id="view-analytics" class="view">
         <div class="charts-grid">
-            <div class="chart-container">
-                <h3 style="margin-bottom: 15px; color: var(--text);">Completions by Category</h3>
-                <canvas id="barChart"></canvas>
-            </div>
-            <div class="chart-container">
-                <h3 style="margin-bottom: 15px; color: var(--text);">Overall Focus Distribution</h3>
-                <canvas id="ringChart" style="max-height: 280px;"></canvas>
-            </div>
+            <div class="chart-container"><canvas id="barChart"></canvas></div>
+            <div class="chart-container"><canvas id="ringChart" style="max-height: 280px;"></canvas></div>
         </div>
     </div>
 </div>
@@ -215,28 +229,119 @@
 <div id="hiddenPdfTemplate"></div>
 
 <script>
-    // --- Config & State ---
+    // --- Config & Themes ---
     const SCRIPT_URL = "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE"; 
-    let currentUser = "AD-GOALS-01";
+    const USER_ID = "AD-GOALS-01";
     let viewingDate = new Date();
     let chartsInstance = {};
     let draggedHabitId = null;
     let ctxTarget = { habitId: null, dateStr: null };
     let activeModalResolver = null;
+    let autoSyncTimer = null;
     
+    const themes = {
+        indigo: { primary: '#6366f1', light: '#818cf8', bg: '#e0e7ff', ring: '#f43f5e' },
+        emerald: { primary: '#10b981', light: '#34d399', bg: '#d1fae5', ring: '#f59e0b' },
+        violet: { primary: '#8b5cf6', light: '#a78bfa', bg: '#ede9fe', ring: '#10b981' },
+        rose: { primary: '#f43f5e', light: '#fb7185', bg: '#ffe4e6', ring: '#6366f1' },
+        amber: { primary: '#f59e0b', light: '#fbbf24', bg: '#fef3c7', ring: '#3b82f6' }
+    };
+
     let appData = {
         userName: "Abhik Dutta",
-        categories: [
-            { id: 'c1', name: 'Fitness & Health' },
-            { id: 'c2', name: 'Finance & Career' }
-        ],
+        lastUpdated: 0,
+        theme: 'indigo',
+        categories: [{ id: 'c1', name: 'Fitness & Health' }, { id: 'c2', name: 'Finance & Career' }],
         habits: [
-            { id: 1, categoryId: 'c1', name: 'Gym Workout', targetDays: 60, color: 1, logs: {}, notes: {}, startDate: '' },
-            { id: 2, categoryId: 'c2', name: 'Deep Work (2 Hrs)', targetDays: 30, color: 2, logs: {}, notes: {}, startDate: '' }
+            { id: 1, categoryId: 'c1', name: 'Gym Workout', targetDays: 60, color: 6, logs: {}, notes: {}, startDate: '' },
+            { id: 2, categoryId: 'c2', name: 'Deep Work (2 Hrs)', targetDays: 30, color: 12, logs: {}, notes: {}, startDate: '' }
         ]
     };
 
-    window.onload = () => { updateUI(); document.addEventListener('click', closeContextMenu); };
+    // --- Initialization & Storage Systems ---
+    window.onload = async () => { 
+        loadLocalData();
+        setTheme(appData.theme);
+        document.getElementById('userNameInput').value = appData.userName;
+        updateUI(); 
+        document.addEventListener('click', closeContextMenu); 
+        await fetchCloudData(); // Background merge
+    };
+
+    function setTheme(themeName) {
+        if(!themes[themeName]) return;
+        const t = themes[themeName];
+        document.documentElement.style.setProperty('--primary', t.primary);
+        document.documentElement.style.setProperty('--primary-light', t.light);
+        document.documentElement.style.setProperty('--primary-bg', t.bg);
+        document.documentElement.style.setProperty('--today-ring', t.ring);
+        appData.theme = themeName;
+        markDataChanged(false); // don't trigger full UI rebuild
+    }
+
+    // LOCAL SAVE FIRST -> DEBOUNCED CLOUD SYNC
+    function markDataChanged(rebuildUI = true) {
+        appData.userName = document.getElementById('userNameInput').value;
+        appData.lastUpdated = Date.now();
+        localStorage.setItem(`sg_data_${USER_ID}`, JSON.stringify(appData));
+        
+        updateSyncStatus("⏳ Saving...", "syncing");
+        if(rebuildUI) updateUI();
+
+        clearTimeout(autoSyncTimer);
+        autoSyncTimer = setTimeout(syncToCloud, 2500);
+    }
+
+    function loadLocalData() {
+        const local = localStorage.getItem(`sg_data_${USER_ID}`);
+        if(local) { appData = JSON.parse(local); }
+    }
+
+    function updateSyncStatus(msg, stateClass) {
+        const badge = document.getElementById('syncStatus');
+        badge.className = `sync-badge ${stateClass}`;
+        badge.innerHTML = msg;
+    }
+
+    async function syncToCloud() {
+        if(SCRIPT_URL === "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE") {
+            updateSyncStatus("✔️ Saved Locally", "synced"); return; // Prevent fake errors if no URL
+        }
+        updateSyncStatus("☁️ Syncing to Cloud...", "syncing");
+        try {
+            // Compress logs for sheets (converting obj keys to array)
+            let payloadData = JSON.parse(JSON.stringify(appData));
+            payloadData.habits.forEach(h => { if(h.logs) h.logs = Object.keys(h.logs); });
+            
+            await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ userId: USER_ID, appData: payloadData }) });
+            updateSyncStatus("✔️ Cloud Synced", "synced");
+        } catch(e) {
+            updateSyncStatus("⚠️ Offline (Saved Locally)", "offline");
+        }
+    }
+
+    async function fetchCloudData() {
+        if(SCRIPT_URL === "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE") return;
+        try {
+            const res = await fetch(`${SCRIPT_URL}?userId=${USER_ID}`);
+            const cloudData = await res.json();
+            
+            // Priority: Keep whichever is newer
+            if(cloudData && cloudData.lastUpdated > appData.lastUpdated) {
+                // Decompress array back to object
+                cloudData.habits.forEach(h => {
+                    if(Array.isArray(h.logs)) { let o = {}; h.logs.forEach(d => o[d]=true); h.logs = o; }
+                });
+                appData = cloudData;
+                setTheme(appData.theme);
+                document.getElementById('userNameInput').value = appData.userName;
+                localStorage.setItem(`sg_data_${USER_ID}`, JSON.stringify(appData));
+                updateUI();
+                updateSyncStatus("✔️ Cloud Updated", "synced");
+            }
+        } catch(e) {}
+    }
+
 
     // --- Custom Modal System ---
     function openModal(title, desc, inputsHtml, confirmText) {
@@ -247,18 +352,12 @@
             const btn = document.getElementById('modalConfirmBtn');
             btn.innerText = confirmText;
             
-            // Clean up old event listeners
             const newBtn = btn.cloneNode(true);
             btn.parentNode.replaceChild(newBtn, btn);
+            newBtn.addEventListener('click', () => { closeModal(); resolve(true); });
             
-            newBtn.addEventListener('click', () => {
-                closeModal();
-                resolve(true);
-            });
             activeModalResolver = resolve;
             document.getElementById('appModal').classList.add('active');
-            
-            // Auto focus first input if exists
             const firstInput = document.querySelector('.modal-input');
             if(firstInput) setTimeout(() => firstInput.focus(), 100);
         });
@@ -275,33 +374,25 @@
         const confirmed = await openModal("New Section", "Create a new category to group your goals.", inputs, "Create");
         if(confirmed) {
             const val = document.getElementById('catName').value.trim();
-            if(val) {
-                appData.categories.push({ id: 'c' + Date.now(), name: val });
-                updateUI();
-            }
+            if(val) { appData.categories.push({ id: 'c' + Date.now(), name: val }); markDataChanged(); }
         }
     }
 
     async function addHabitPrompt() {
         if(appData.categories.length === 0) return alert("Please create a section first.");
-        
         let catOptions = appData.categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
         const inputs = `
             <input type="text" id="hName" class="modal-input" placeholder="Goal Name (e.g., Read 10 Pages)">
             <input type="number" id="hTarget" class="modal-input" placeholder="Target Days (e.g., 60)" value="30">
             <select id="hCat" class="modal-input">${catOptions}</select>
         `;
-        const confirmed = await openModal("Add New Goal", "Define your habit and set a day target to complete it.", inputs, "Add Goal");
+        const confirmed = await openModal("Add New Goal", "Define your habit and set a day target.", inputs, "Add Goal");
         if(confirmed) {
             const name = document.getElementById('hName').value.trim();
             const target = parseInt(document.getElementById('hTarget').value) || 30;
-            const catId = document.getElementById('hCat').value;
             if(name) {
-                appData.habits.push({ 
-                    id: Date.now(), categoryId: catId, name: name, targetDays: target, 
-                    color: Math.floor(Math.random() * 5) + 1, logs: {}, notes: {}, startDate: getFormatDate(new Date()) 
-                });
-                updateUI();
+                appData.habits.push({ id: Date.now(), categoryId: document.getElementById('hCat').value, name: name, targetDays: target, color: Math.floor(Math.random() * 20) + 1, logs: {}, notes: {}, startDate: getFormatDate(new Date()) });
+                markDataChanged();
             }
         }
     }
@@ -322,31 +413,22 @@
         const h = appData.habits.find(x => x.id === ctxTarget.habitId);
         if(!h.notes) h.notes = {};
         
-        if(action === 'start') {
-            h.startDate = ctxTarget.dateStr;
-        } else if (action === 'clear') {
-            if(h.logs) delete h.logs[ctxTarget.dateStr];
-            if(h.notes) delete h.notes[ctxTarget.dateStr];
-        } else if (action === 'note') {
+        if(action === 'start') { h.startDate = ctxTarget.dateStr; } 
+        else if (action === 'clear') { if(h.logs) delete h.logs[ctxTarget.dateStr]; if(h.notes) delete h.notes[ctxTarget.dateStr]; } 
+        else if (action === 'note') {
             const existing = h.notes[ctxTarget.dateStr] || '';
-            const inputs = `<input type="text" id="noteInput" class="modal-input" value="${existing}" placeholder="Why did you miss? Or any details...">`;
+            const inputs = `<input type="text" id="noteInput" class="modal-input" value="${existing}" placeholder="Reason or details...">`;
             const confirmed = await openModal("Add Note", `Entry for ${ctxTarget.dateStr}`, inputs, "Save Note");
             if(confirmed) {
                 const val = document.getElementById('noteInput').value.trim();
-                if(val) h.notes[ctxTarget.dateStr] = val;
-                else delete h.notes[ctxTarget.dateStr];
+                if(val) h.notes[ctxTarget.dateStr] = val; else delete h.notes[ctxTarget.dateStr];
             }
         }
-        updateUI();
+        markDataChanged();
     }
 
-    // --- Core UI & Dates ---
-    function getFormatDate(d) {
-        return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-    }
-
-    function saveUserName(name) { appData.userName = name; }
-    function copyId() { navigator.clipboard.writeText(currentUser); }
+    // --- Core UI Rendering ---
+    function getFormatDate(d) { return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
 
     function updateUI() {
         const mNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -383,34 +465,28 @@
         const h = appData.habits.find(x => x.id === habitId);
         if(!h.logs) h.logs = {};
         h.logs[dateStr] ? delete h.logs[dateStr] : h.logs[dateStr] = true;
-        updateUI();
+        markDataChanged();
     }
 
-    // --- Dynamic Renderers (Grouped by Category) ---
     function renderView(containerId, gridGeneratorFn) {
-        const container = document.getElementById(containerId); 
-        container.innerHTML = '';
-        
+        const container = document.getElementById(containerId); container.innerHTML = '';
         appData.categories.forEach(cat => {
             const habitsInCat = appData.habits.filter(h => h.categoryId === cat.id);
-            if(habitsInCat.length === 0 && containerId !== 'view-month') return; // Hide empty cats in other views
+            if(habitsInCat.length === 0 && containerId !== 'view-month') return; 
 
             let catHTML = `
                 <div class="category-section">
                     <div class="category-header">
                         <div class="category-title">📂 ${cat.name}</div>
-                        <div style="font-size:12px; color:var(--danger); cursor:pointer; font-weight:bold;" onclick="deleteCategory('${cat.id}')">Delete Section</div>
+                        <div style="font-size:12px; color:var(--danger); cursor:pointer; font-weight:bold;" onclick="deleteCategoryPrompt('${cat.id}')">Delete Section</div>
                     </div>
                     <div class="habit-list" data-category-id="${cat.id}">
             `;
-            
             habitsInCat.forEach(habit => {
-                const generated = gridGeneratorFn(habit);
-                catHTML += createHabitCard(habit, generated.html, generated.daysArr, generated.preCalcStats);
+                const gen = gridGeneratorFn(habit);
+                catHTML += createHabitCard(habit, gen.html, gen.daysArr, gen.preCalcStats);
             });
-            
-            catHTML += `</div></div>`;
-            container.innerHTML += catHTML;
+            container.innerHTML += catHTML + `</div></div>`;
         });
     }
 
@@ -420,23 +496,17 @@
         const firstDay = new Date(y, m, 1).getDay();
         const todayStr = getFormatDate(new Date());
 
-        let daysArr = [];
-        let html = `<div class="grid-container grid-month">`;
-        for(let i=0; i<firstDay; i++) html += `<div style="border:none; background:transparent;"></div>`;
+        let daysArr = []; let html = `<div class="grid-container grid-month">`;
+        for(let i=0; i<firstDay; i++) html += `<div></div>`;
         
         for(let i=1; i<=daysInMonth; i++) {
             let dStr = getFormatDate(new Date(y, m, i)); daysArr.push(dStr);
-            let isToday = (dStr === todayStr) ? 'is-today' : '';
-            let isChecked = habit.logs && habit.logs[dStr] ? `box-checked-${habit.color}` : '';
+            let isChecked = habit.logs && habit.logs[dStr] ? `color-${habit.color}` : '';
             let hasNote = habit.notes && habit.notes[dStr] ? 'has-note' : '';
-            let isStart = habit.startDate === dStr ? 'is-start' : '';
-            
-            html += `<div class="day-box ${isToday} ${isChecked} ${hasNote} ${isStart}" 
-                onclick="toggleLog(${habit.id}, '${dStr}')" oncontextmenu="handleRightClick(event, ${habit.id}, '${dStr}')"
-                title="${habit.notes && habit.notes[dStr] ? habit.notes[dStr] : dStr}">${i}</div>`;
+            let classes = `day-box ${(dStr === todayStr) ? 'is-today' : ''} ${isChecked} ${hasNote} ${habit.startDate === dStr ? 'is-start' : ''}`;
+            html += `<div class="${classes}" onclick="toggleLog(${habit.id}, '${dStr}')" oncontextmenu="handleRightClick(event, ${habit.id}, '${dStr}')">${i}</div>`;
         }
-        html += `</div>`;
-        return { html, daysArr, preCalcStats: null };
+        return { html: html + `</div>`, daysArr, preCalcStats: null };
     }
 
     function generateWeekGrid(habit) {
@@ -445,42 +515,42 @@
         const todayStr = getFormatDate(new Date());
         const dNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-        let daysArr = [];
-        let html = `<div class="grid-container grid-week">`;
+        let daysArr = []; let html = `<div class="grid-container grid-week">`;
         for(let i=0; i<7; i++) {
             let dStr = getFormatDate(new Date(curr.setDate(first + i))); daysArr.push(dStr);
-            let isToday = (dStr === todayStr) ? 'is-today' : '';
-            let isChecked = habit.logs && habit.logs[dStr] ? `box-checked-${habit.color}` : '';
+            let isChecked = habit.logs && habit.logs[dStr] ? `color-${habit.color}` : '';
             let hasNote = habit.notes && habit.notes[dStr] ? 'has-note' : '';
-            
-            html += `<div class="day-box ${isToday} ${isChecked} ${hasNote}" style="height:55px; flex-direction:column;"
-                onclick="toggleLog(${habit.id}, '${dStr}')" oncontextmenu="handleRightClick(event, ${habit.id}, '${dStr}')">
-                <span style="font-size:10px; color:#64748b;">${dNames[i]}</span><span style="font-size:14px;">${new Date(dStr).getDate()}</span></div>`;
+            let classes = `day-box ${(dStr === todayStr) ? 'is-today' : ''} ${isChecked} ${hasNote}`;
+            html += `<div class="${classes}" style="height:55px; flex-direction:column;" onclick="toggleLog(${habit.id}, '${dStr}')" oncontextmenu="handleRightClick(event, ${habit.id}, '${dStr}')">
+                <span style="font-size:10px;">${dNames[i]}</span><span style="font-size:14px;">${new Date(dStr).getDate()}</span></div>`;
         }
-        html += `</div>`;
-        return { html, daysArr, preCalcStats: null };
+        return { html: html + `</div>`, daysArr, preCalcStats: null };
     }
 
     function generateYearGrid(habit) {
         const y = viewingDate.getFullYear();
         const months = ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"];
         let html = `<div class="grid-container grid-year">`;
-        let totalActiveThisYear = 0;
+        let total = 0;
         
-        for(let m=0; m<12; m++) {
-            let count = 0; let daysInM = new Date(y, m + 1, 0).getDate();
-            for(let d=1; d<=daysInM; d++) {
-                if(habit.logs && habit.logs[getFormatDate(new Date(y, m, d))]) { count++; totalActiveThisYear++; }
+        // Header Row for Months
+        for(let m=0; m<12; m++) html += `<div style="font-size:10px; font-weight:bold; color:var(--text-light); text-align:center;">${months[m]}</div>`;
+        
+        // Dummy 31 days mapping down vertically (simplified visual density map)
+        for(let d=1; d<=31; d++) {
+            for(let m=0; m<12; m++) {
+                let isValidDate = d <= new Date(y, m + 1, 0).getDate();
+                if(isValidDate) {
+                    let isLogged = habit.logs && habit.logs[getFormatDate(new Date(y, m, d))];
+                    if(isLogged) total++;
+                    html += `<div class="day-box year-box ${isLogged ? 'color-'+habit.color : ''}" title="Day ${d}"></div>`;
+                } else {
+                    html += `<div class="day-box year-box" style="background:transparent; border:none;"></div>`;
+                }
             }
-            let intensity = count > 0 ? `box-checked-${habit.color}` : '';
-            if(count > 15) intensity += ` filter: brightness(0.9);`;
-            if(count > 25) intensity += ` filter: brightness(0.8); font-weight: bold;`;
-            html += `<div class="day-box year-box ${intensity}" title="${count} days"><span>${months[m]}</span><span style="font-size:9px">${count}</span></div>`;
         }
-        html += `</div>`;
-        
-        let compData = { comp: totalActiveThisYear, skip: 365 - totalActiveThisYear, pct: Math.min(100, Math.round((totalActiveThisYear/(habit.targetDays||365))*100)) };
-        return { html, daysArr: [], preCalcStats: compData };
+        let compData = { comp: total, skip: 365 - total, pct: Math.min(100, Math.round((total/(habit.targetDays||365))*100)) };
+        return { html: html + `</div>`, daysArr: [], preCalcStats: compData };
     }
 
     function createHabitCard(habit, gridContent, daysArr, preCalcStats) {
@@ -488,30 +558,25 @@
         const isGoalMet = totalComp >= habit.targetDays;
         
         let stats = preCalcStats;
-        if(!stats) { // Calculate for current view (Month/Week)
-            let comp = 0; let skip = 0;
-            daysArr.forEach(d => habit.logs && habit.logs[d] ? comp++ : skip++);
-            stats = { comp, skip, pct: daysArr.length ? Math.round((comp/daysArr.length)*100) : 0 };
+        if(!stats) { 
+            let comp = 0; daysArr.forEach(d => { if(habit.logs && habit.logs[d]) comp++; });
+            stats = { comp, pct: daysArr.length ? Math.round((comp/daysArr.length)*100) : 0 };
         }
-
-        // Target Progress (Overall)
         const overallPct = Math.min(100, Math.round((totalComp / habit.targetDays) * 100));
 
         return `
             <div class="habit-card" draggable="true" data-habit-id="${habit.id}">
                 <div class="habit-info">
-                    <div class="goal-badge ${isGoalMet ? 'completed' : ''}">🎯 Goal Reached!</div>
+                    <div class="goal-badge ${isGoalMet ? 'completed' : ''}">🎯 Reached</div>
                     <div class="habit-name">${habit.name}</div>
-                    <div class="habit-stats">
-                        <span>View: ✅ ${stats.comp}</span>
-                        <span>Total: ${totalComp}/${habit.targetDays}</span>
+                    <div style="font-size: 11px; color: var(--text-light); margin-top: 6px; display: flex; justify-content: space-between;">
+                        <span>View: ✅ ${stats.comp}</span><span>Total: ${totalComp}/${habit.targetDays}</span>
                     </div>
-                    <div class="progress-bar-bg" title="${overallPct}% of Target">
+                    <div class="progress-bar-bg" title="${overallPct}%">
                         <div class="progress-bar-fill" style="width: ${overallPct}%; background-color: ${isGoalMet ? 'var(--success)' : ''};"></div>
                     </div>
                     <div style="font-size:11px; color:var(--text-light); margin-top:8px; cursor:pointer; display:flex; justify-content:space-between;">
-                        <span onclick="editHabit(${habit.id})">⚙️ Edit</span>
-                        <span style="color:var(--danger)" onclick="deleteHabitPrompt(${habit.id})">Delete</span>
+                        <span onclick="editHabit(${habit.id})">⚙️ Edit</span><span style="color:var(--danger)" onclick="deleteHabitPrompt(${habit.id})">Delete</span>
                     </div>
                 </div>
                 ${gridContent}
@@ -519,155 +584,111 @@
         `;
     }
 
-    // --- Logic Interactivity ---
     async function deleteHabitPrompt(id) {
-        const confirmed = await openModal("Delete Goal?", "Are you sure? All historical data will be lost forever.", "", "Delete");
-        if(confirmed) { appData.habits = appData.habits.filter(h => h.id !== id); updateUI(); }
+        if(await openModal("Delete Goal?", "Are you sure? All historical data will be lost.", "", "Delete")) {
+            appData.habits = appData.habits.filter(h => h.id !== id); markDataChanged();
+        }
     }
 
-    async function deleteCategory(id) {
-        const confirmed = await openModal("Delete Section?", "Deleting this will also delete ALL goals inside it.", "", "Delete All");
-        if(confirmed) {
+    async function deleteCategoryPrompt(id) {
+        if(await openModal("Delete Section?", "Deleting this will also delete ALL goals inside it.", "", "Delete All")) {
             appData.habits = appData.habits.filter(h => h.categoryId !== id);
             appData.categories = appData.categories.filter(c => c.id !== id);
-            updateUI();
+            markDataChanged();
         }
     }
 
     async function editHabit(id) {
         const h = appData.habits.find(x => x.id === id);
         const inputs = `
-            <label style="font-size:12px; color:var(--text-light);">Goal Name</label>
-            <input type="text" id="eName" class="modal-input" value="${h.name}">
-            <label style="font-size:12px; color:var(--text-light);">Target Days</label>
-            <input type="number" id="eTarget" class="modal-input" value="${h.targetDays}">
+            <label style="font-size:12px;">Goal Name</label><input type="text" id="eName" class="modal-input" value="${h.name}">
+            <label style="font-size:12px;">Target Days</label><input type="number" id="eTarget" class="modal-input" value="${h.targetDays}">
         `;
-        const confirmed = await openModal("Edit Goal", "Update settings for " + h.name, inputs, "Save Changes");
-        if(confirmed) {
+        if(await openModal("Edit Goal", "Update settings", inputs, "Save Changes")) {
             h.name = document.getElementById('eName').value.trim() || h.name;
             h.targetDays = parseInt(document.getElementById('eTarget').value) || h.targetDays;
-            updateUI();
+            markDataChanged();
         }
     }
 
-    // --- Smart Drag & Drop ---
     function setupDragAndDrop() {
         const cards = document.querySelectorAll('.habit-card');
         const lists = document.querySelectorAll('.habit-list');
-
         cards.forEach(card => {
             card.addEventListener('dragstart', () => { draggedHabitId = parseInt(card.dataset.habitId); card.style.opacity = '0.5'; });
             card.addEventListener('dragend', () => { draggedHabitId = null; card.style.opacity = '1'; lists.forEach(l => l.classList.remove('drag-over')); });
         });
-
         lists.forEach(list => {
             list.addEventListener('dragover', e => { e.preventDefault(); list.classList.add('drag-over'); });
             list.addEventListener('dragleave', () => list.classList.remove('drag-over'));
             list.addEventListener('drop', e => {
                 e.preventDefault(); list.classList.remove('drag-over');
-                const newCatId = list.dataset.categoryId;
-                const habit = appData.habits.find(h => h.id === draggedHabitId);
-                if(habit && habit.categoryId !== newCatId) {
-                    habit.categoryId = newCatId; // Move to new category
-                    updateUI();
-                }
+                const h = appData.habits.find(x => x.id === draggedHabitId);
+                if(h && h.categoryId !== list.dataset.categoryId) { h.categoryId = list.dataset.categoryId; markDataChanged(); }
             });
         });
     }
 
-    // --- Charts & AI Analysis ---
     function updateCharts() {
         const barCtx = document.getElementById('barChart'); const ringCtx = document.getElementById('ringChart');
         if(!barCtx || !ringCtx) return;
 
         let catLabels = appData.categories.map(c => c.name);
-        let catData = appData.categories.map(c => {
-            return appData.habits.filter(h => h.categoryId === c.id).reduce((sum, h) => sum + (h.logs ? Object.keys(h.logs).length : 0), 0);
-        });
+        let catData = appData.categories.map(c => appData.habits.filter(h => h.categoryId === c.id).reduce((sum, h) => sum + (h.logs ? Object.keys(h.logs).length : 0), 0));
 
         if(chartsInstance.bar) chartsInstance.bar.destroy();
         if(chartsInstance.ring) chartsInstance.ring.destroy();
 
-        chartsInstance.bar = new Chart(barCtx, {
-            type: 'bar', data: { labels: catLabels, datasets: [{ label: 'Total Completions', data: catData, backgroundColor: '#818cf8', borderRadius: 8 }] },
-            options: { responsive: true, scales: { y: { beginAtZero: true } } }
-        });
-
-        chartsInstance.ring = new Chart(ringCtx, {
-            type: 'doughnut', data: { labels: catLabels, datasets: [{ data: catData, backgroundColor: ['#6366f1', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6'] }] },
-            options: { responsive: true, cutout: '75%' }
-        });
+        chartsInstance.bar = new Chart(barCtx, { type: 'bar', data: { labels: catLabels, datasets: [{ label: 'Completions', data: catData, backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--primary-light'), borderRadius: 8 }] }});
+        chartsInstance.ring = new Chart(ringCtx, { type: 'doughnut', data: { labels: catLabels, datasets: [{ data: catData, backgroundColor: ['#6366f1', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6'] }]}, options: { cutout: '75%' } });
     }
 
-    function generateAIOpinion() {
-        if(appData.habits.length === 0) return "Not enough data to analyze yet. Keep setting goals!";
-        
-        let totalComps = 0; let bestHabit = null; let bestComp = -1;
-        appData.habits.forEach(h => {
-            let c = h.logs ? Object.keys(h.logs).length : 0;
-            totalComps += c;
-            if(c > bestComp) { bestComp = c; bestHabit = h; }
-        });
-
-        if(totalComps === 0) return "Welcome to Smart Goals! Start tracking your daily habits to see your AI analysis here.";
-
-        let opinion = `Based on your data, you've achieved a total of <strong>${totalComps} successful days</strong> across all goals. `;
-        if(bestHabit) {
-            let isMet = bestComp >= bestHabit.targetDays;
-            opinion += `Your strongest area right now is <strong>"${bestHabit.name}"</strong> with ${bestComp} completions. `;
-            if(isMet) opinion += `Impressively, you have successfully hit your target goal for this habit! `;
-            else opinion += `You are on your way to hitting the ${bestHabit.targetDays}-day target for this. `;
-        }
-        opinion += `Consistency is the key to compounding growth. Keep leveraging your strengths while dedicating focused time to goals needing more attention.`;
-        return opinion;
-    }
-
-    // --- Premium PDF Report ---
+    // --- High-Quality PDF Export ---
     async function generateProfessionalPDF() {
         const btn = document.getElementById('btnExportPdf');
-        btn.innerText = "Generating...";
+        btn.innerText = "Processing...";
         
         const template = document.getElementById('hiddenPdfTemplate');
         template.style.display = 'block';
         
-        // Convert Chart to Image for PDF
-        const chartImgSrc = document.getElementById('ringChart').toDataURL("image/png", 1.0);
+        let aiOpinion = "Keep pushing forward! Log more days to generate deeper AI insights.";
+        if(appData.habits.length > 0) {
+            let total = 0; let best = null; let bestVal = -1;
+            appData.habits.forEach(h => { let c = h.logs ? Object.keys(h.logs).length : 0; total += c; if(c>bestVal){bestVal=c; best=h;} });
+            if(total > 0) aiOpinion = `You've accomplished a solid ${total} successful days across all your metrics. Your leading metric is "${best.name}" with ${bestVal} completions. Consistency is your greatest asset here—maintain this momentum.`;
+        }
 
         let html = `
             <div class="pdf-header">
-                <h1 style="color:var(--primary); margin-bottom:5px; font-size: 32px;">Smart Goals Progress Report</h1>
-                <p style="color:var(--text-light); font-size: 14px;"><strong>Profile:</strong> ${appData.userName} | <strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
+                <h1 style="color:var(--primary); font-size: 32px;">Smart Goals Intelligence Report</h1>
+                <p><strong>Profile:</strong> ${appData.userName} | <strong>Export Date:</strong> ${new Date().toLocaleDateString()}</p>
             </div>
-            
-            <div class="pdf-ai-insight">
-                <strong>🤖 Smart Analysis:</strong><br>
-                ${generateAIOpinion()}
-            </div>
+            <div class="pdf-ai-insight"><strong>🤖 AI System Insight:</strong><br>${aiOpinion}</div>
         `;
 
-        appData.categories.forEach(cat => {
+        appData.categories.forEach((cat, index) => {
             const habits = appData.habits.filter(h => h.categoryId === cat.id);
             if(habits.length === 0) return;
 
-            html += `<div class="pdf-category"><h2 style="color:var(--text); border-bottom: 2px solid var(--border); padding-bottom: 5px; margin-bottom: 15px;">📂 ${cat.name}</h2>`;
+            // Force a page break after the first two categories to ensure layout stays clean
+            if(index > 0 && index % 2 === 0) html += `<div class="page-break"></div>`;
+
+            html += `<div class="pdf-category"><h2 style="border-bottom: 2px solid var(--border); padding-bottom: 5px; margin-bottom: 15px;">📂 ${cat.name}</h2>`;
             
             habits.forEach(h => {
                 let comp = h.logs ? Object.keys(h.logs).length : 0;
-                let isGoalMet = comp >= h.targetDays;
-                let badge = isGoalMet ? `<span style="color:var(--success); font-weight:bold;">[🎯 Goal Met]</span>` : '';
-                
+                let badge = comp >= h.targetDays ? `<span style="color:var(--success); font-weight:bold;">[🎯 Goal Met]</span>` : '';
                 let noteHtml = '';
                 if(h.notes && Object.keys(h.notes).length > 0) {
-                    noteHtml = `<div class="pdf-notes"><strong>Recorded Insights:</strong><br>`;
+                    noteHtml = `<div class="pdf-notes"><strong>Logged Insights:</strong><br>`;
                     for (const [date, note] of Object.entries(h.notes)) { noteHtml += `• ${date}: ${note}<br>`; }
                     noteHtml += `</div>`;
                 }
-
                 html += `
-                    <div class="pdf-row" style="flex-direction: column; align-items: flex-start;">
-                        <div style="display:flex; justify-content:space-between; width: 100%; margin-bottom: 8px;">
-                            <span style="font-size:16px; font-weight:bold; color:#1e293b;">${h.name} ${badge}</span>
-                            <span><strong>Started:</strong> ${h.startDate || 'N/A'} | <strong>Progress:</strong> ${comp}/${h.targetDays} Days</span>
+                    <div class="pdf-row">
+                        <div style="display:flex; justify-content:space-between; margin-bottom: 8px;">
+                            <span style="font-size:16px; font-weight:bold;">${h.name} ${badge}</span>
+                            <span><strong>Started:</strong> ${h.startDate || 'N/A'} | <strong>Progress:</strong> ${comp}/${h.targetDays}</span>
                         </div>
                         ${noteHtml}
                     </div>
@@ -676,46 +697,30 @@
             html += `</div>`;
         });
 
-        // Inject Chart Image
-        html += `
-            <div class="pdf-chart-box">
-                <h3 style="margin-bottom: 10px; color: var(--text);">Focus Distribution</h3>
-                <img src="${chartImgSrc}" style="max-width: 300px; height: auto;">
-            </div>
-        `;
+        // Add Chart if available
+        const chartCanvas = document.getElementById('ringChart');
+        if(chartCanvas) {
+            html += `<div class="page-break"></div><div style="text-align:center; margin-top:20px;">
+                        <h3>Category Distribution</h3>
+                        <img src="${chartCanvas.toDataURL("image/png", 1.0)}" style="max-width: 400px;">
+                     </div>`;
+        }
 
         template.innerHTML = html;
 
         const opt = {
-            margin: 0.5,
-            filename: `SmartGoals_${appData.userName.replace(/\s+/g, '_')}.pdf`,
-            image: { type: 'jpeg', quality: 1 },
-            html2canvas: { scale: 2, useCORS: true },
-            jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+            margin:       0.5,
+            filename:     `SmartGoals_${appData.userName.replace(/\s+/g, '_')}.pdf`,
+            image:        { type: 'jpeg', quality: 1 },
+            html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
+            jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' },
+            pagebreak:    { mode: ['css', 'legacy'] }
         };
 
         html2pdf().set(opt).from(template).save().then(() => {
             template.style.display = 'none'; 
             btn.innerText = "📥 Export AI Report";
         });
-    }
-
-    // --- Smart Compress & Sync (Mocked for Demo) ---
-    async function syncData() {
-        const status = document.getElementById('syncStatus');
-        status.innerText = "Syncing (Smart Compress)...";
-        status.style.color = "var(--primary)";
-        
-        // Data Compression logic from previous request remains intact for backend
-        let compressed = JSON.parse(JSON.stringify(appData));
-        compressed.habits.forEach(h => { if(h.logs) h.logs = Object.keys(h.logs); });
-        
-        // Simulating network request
-        setTimeout(() => {
-            status.innerText = "Saved Securely!";
-            status.style.color = "var(--success)";
-            setTimeout(() => { status.innerText = "Ready"; status.style.color = "var(--text-light)"; }, 3000);
-        }, 800);
     }
 </script>
 </body>
