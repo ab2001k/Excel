@@ -541,12 +541,22 @@ body { padding: 24px; overflow-x: hidden; transition: background-color .3s, colo
       <a href="#" onclick="handleForgotPassword(event)" style="font-size: 11px; color: var(--primary); text-decoration: none; font-weight: 500;">Forgot password?</a>
     </div>
 
+    <div id="otpSection" style="display:none; margin-bottom: 14px;">
+       <input type="text" id="authOtp" class="modal-input" placeholder="Enter 6-digit code">
+       <button class="btn btn-primary" style="width: 100%; justify-content:center;" onclick="handleVerifyOtp()">Verify Code</button>
+    </div>
+
     <div id="authError" style="color: var(--danger); font-size: 12px; margin-bottom: 10px; text-align: center; display:none;"></div>
     
-    <div style="display: flex; gap: 8px; flex-direction: column;">
+    <div style="display: flex; gap: 8px; flex-direction: column;" id="authButtonsSection">
       <button class="btn btn-primary" style="width: 100%; justify-content:center;" onclick="handleAuth('login')">Log In</button>
       <button class="btn btn-ghost" style="width: 100%; justify-content:center;" onclick="handleAuth('signup')">Sign Up</button>
     </div>
+
+    <div style="text-align: center; margin-top: 14px;">
+      <a href="#" id="otpToggleLink" onclick="showOtpField(event)" style="display:none; font-size: 11px; color: var(--text-3); text-decoration: none; font-weight: 500;">Have a 6-digit code?</a>
+    </div>
+
   </div>
 </div>
 
@@ -832,7 +842,13 @@ window.onload = async () => {
     }
   });
 
-  // Check Supabase Auth
+  // 1. Secret Admin Local Bypass Check
+  if (sessionStorage.getItem('admin_secret') === 'true') {
+     initializeAdmin();
+     return; // Stop supabase flow
+  }
+
+  // 2. Normal Supabase Auth Flow
   const { data: { session } } = await supabase.auth.getSession();
   if (session) {
     currentUser = session.user;
@@ -846,7 +862,8 @@ window.onload = async () => {
 
   // Listen for auth changes
   supabase.auth.onAuthStateChange(async (event, session) => {
-    // Password Reset Flow
+    if (sessionStorage.getItem('admin_secret') === 'true') return;
+
     if (event === 'PASSWORD_RECOVERY') {
        const newPassword = prompt("Please enter your new password:");
        if (newPassword) {
@@ -875,6 +892,36 @@ window.onload = async () => {
 // =============================================================
 // Auth & Cloud Sync Functions
 // =============================================================
+
+function initializeAdmin() {
+    currentUser = { id: 'admin_local', email: 'admin' };
+    USER_ID = "ADMIN";
+    document.getElementById('trackerIdDisplay').innerText = `ID-ADMIN`;
+    document.getElementById('authModal').style.display = 'none';
+    
+    loadLocalData(); // Loads localstorage directly
+    appData.userName = "Abhik Dutta"; // Enforce Admin Name
+    
+    buildThemeSelector();
+    setTheme(appData.theme);
+    setAvatar(appData.avatar || 'default');
+    
+    // Apply UI state
+    document.getElementById('userNameInput').value = appData.userName;
+    document.getElementById('bmiHeight').value = appData.bmi.height;
+    document.getElementById('bmiWeight').value = appData.bmi.weight;
+    document.getElementById('bmiAge').value = appData.bmi.age;
+    document.getElementById('bmiSex').value = appData.bmi.sex;
+    document.getElementById('waterActivity').value = appData.water.activity;
+    document.getElementById('waterClimate').value = appData.water.climate;
+    if (appData.bmi.enabled) document.getElementById('bmiSwitch').classList.add('on');
+    if (appData.water.enabled) document.getElementById('waterSwitch').classList.add('on');
+    
+    computeBMI();
+    recalcWaterGoal();
+    updateUI();
+}
+
 async function handleAuth(action) {
   const email = document.getElementById('authEmail').value;
   const password = document.getElementById('authPassword').value;
@@ -882,6 +929,13 @@ async function handleAuth(action) {
   errEl.style.display = 'none';
 
   if(!email || !password) { errEl.innerText = 'Please enter email and password.'; errEl.style.display = 'block'; return; }
+
+  // SECRET ADMIN CHECK
+  if (email === 'admin' && password === 'admin@123') {
+      sessionStorage.setItem('admin_secret', 'true');
+      initializeAdmin();
+      return;
+  }
 
   let err = null;
   document.getElementById('authModal').style.pointerEvents = 'none';
@@ -893,9 +947,10 @@ async function handleAuth(action) {
     if(!error && data.user && data.user.identities && data.user.identities.length === 0) {
         err = { message: "User already exists. Please log in." };
     } else if (!error) {
-        alert('Signup successful! Please check your email inbox (and spam folder) for a confirmation link to activate your account.');
+        alert('Signup successful! Check your email inbox for a confirmation link (or 6-digit code) to activate your account.');
         document.getElementById('authEmail').value = '';
         document.getElementById('authPassword').value = '';
+        document.getElementById('otpToggleLink').style.display = 'inline-block';
     }
   } else {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -906,6 +961,42 @@ async function handleAuth(action) {
   document.getElementById('authModal').style.opacity = '1';
 
   if (err) { errEl.innerText = err.message; errEl.style.display = 'block'; }
+}
+
+function showOtpField(e) {
+    e.preventDefault();
+    document.getElementById('otpSection').style.display = 'block';
+    document.getElementById('otpToggleLink').style.display = 'none';
+    document.getElementById('authButtonsSection').style.display = 'none';
+}
+
+async function handleVerifyOtp() {
+    const email = document.getElementById('authEmail').value;
+    const token = document.getElementById('authOtp').value;
+    const errEl = document.getElementById('authError');
+    errEl.style.display = 'none';
+
+    if(!email || !token) { errEl.innerText = 'Email and 6-digit code required.'; errEl.style.display = 'block'; return; }
+
+    document.getElementById('authModal').style.pointerEvents = 'none';
+    document.getElementById('authModal').style.opacity = '0.7';
+
+    let { error } = await supabase.auth.verifyOtp({ email, token, type: 'signup' });
+    if (error) {
+        const rec = await supabase.auth.verifyOtp({ email, token, type: 'recovery' });
+        error = rec.error;
+    }
+
+    document.getElementById('authModal').style.pointerEvents = 'all';
+    document.getElementById('authModal').style.opacity = '1';
+
+    if (error) {
+        errEl.innerText = error.message; 
+        errEl.style.display = 'block';
+    } else {
+        alert("Verification successful!");
+        document.getElementById('otpSection').style.display = 'none';
+    }
 }
 
 async function handleForgotPassword(e) {
@@ -932,29 +1023,44 @@ async function handleForgotPassword(e) {
     errEl.innerText = error.message; 
     errEl.style.display = 'block';
   } else {
-    alert('Password reset link has been securely sent to your email. You can use it to login and reset your password.');
+    alert('Password reset link sent to your email.');
+    document.getElementById('otpToggleLink').style.display = 'inline-block';
   }
 }
 
 async function handleLogout() {
+   if (sessionStorage.getItem('admin_secret') === 'true') {
+       sessionStorage.removeItem('admin_secret');
+       location.reload();
+       return;
+   }
    await supabase.auth.signOut();
 }
 
+function loadLocalData() {
+  const local = localStorage.getItem(`sg_data_ADMIN`);
+  if(!local) return;
+  try {
+    const parsed = JSON.parse(local);
+    appData = Object.assign({}, appData, parsed);
+    if (!appData.bmi) appData.bmi = { enabled:false, height:170, weight:65, age:28, sex:'m' };
+    if (!appData.water) appData.water = { enabled:false, activity:'mod', climate:'temperate', goalMl:2500, byDay:{} };
+    if (!appData.avatar) appData.avatar = 'default';
+  } catch(e) { console.warn('load failed', e); }
+}
+
 async function loadCloudData() {
-   // Fetch from Supabase
    const { data, error } = await supabase.from('user_data').select('app_state').eq('id', currentUser.id).single();
    
    if (data && data.app_state) {
-      // Merge cloud data with defaults to avoid missing keys
       appData = Object.assign({}, appData, data.app_state);
       if (!appData.bmi) appData.bmi = { enabled:false, height:170, weight:65, age:28, sex:'m' };
       if (!appData.water) appData.water = { enabled:false, activity:'mod', climate:'temperate', goalMl:2500, byDay:{} };
       if (!appData.avatar) appData.avatar = 'default';
-   } else if (error && error.code !== 'PGRST116') { // PGRST116 is just "no rows returned"
+   } else if (error && error.code !== 'PGRST116') {
       console.error("Error loading data:", error);
    }
 
-   // Initialize UI with data
    buildThemeSelector();
    setTheme(appData.theme);
    setAvatar(appData.avatar || 'default');
@@ -976,6 +1082,13 @@ function markDataChanged(rebuildUI = true) {
   appData.userName = document.getElementById('userNameInput').value;
   appData.lastUpdated = Date.now();
   
+  if (currentUser && currentUser.id === 'admin_local') {
+      localStorage.setItem(`sg_data_ADMIN`, JSON.stringify(appData));
+      updateSyncStatus('<span class="sync-dot"></span>Saved locally', 'synced');
+      if(rebuildUI) updateUI();
+      return;
+  }
+
   updateSyncStatus('<span class="sync-dot"></span>Syncing to cloud…', 'syncing');
   if(rebuildUI) updateUI();
   
