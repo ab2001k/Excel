@@ -435,7 +435,7 @@ body { padding: 24px; overflow-x: hidden; transition: background-color .3s, colo
    =================================================== */
 #hiddenPdfTemplate { display: none; background: #ffffff; color: #09090b; }
 .pdf-page { width: 794px; height: 1122px; overflow: hidden; padding: 44px 48px; box-sizing: border-box; background: white; margin: 0 auto; page-break-after: always; position: relative; font-family: 'Inter', sans-serif; }
-.pdf-page:last-child { page-break-after: auto; }
+.pdf-page:last-child { page-break-after: avoid; }
 
 /* Cover */
 .pdf-cover { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white; padding: 60px 48px; }
@@ -535,8 +535,14 @@ body { padding: 24px; overflow-x: hidden; transition: background-color .3s, colo
     <div class="modal-title" style="text-align:center;">Welcome to Smart Goals</div>
     <div class="modal-desc" style="text-align:center; margin-bottom: 24px;">Log in or sign up to securely sync your data.</div>
     <input type="email" id="authEmail" class="modal-input" placeholder="Email address">
-    <input type="password" id="authPassword" class="modal-input" placeholder="Password">
+    <input type="password" id="authPassword" class="modal-input" placeholder="Password" style="margin-bottom: 6px;">
+    
+    <div style="text-align: right; margin-bottom: 14px;">
+      <a href="#" onclick="handleForgotPassword(event)" style="font-size: 11px; color: var(--primary); text-decoration: none; font-weight: 500;">Forgot password?</a>
+    </div>
+
     <div id="authError" style="color: var(--danger); font-size: 12px; margin-bottom: 10px; text-align: center; display:none;"></div>
+    
     <div style="display: flex; gap: 8px; flex-direction: column;">
       <button class="btn btn-primary" style="width: 100%; justify-content:center;" onclick="handleAuth('login')">Log In</button>
       <button class="btn btn-ghost" style="width: 100%; justify-content:center;" onclick="handleAuth('signup')">Sign Up</button>
@@ -777,7 +783,7 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
 let currentUser = null;
-let USER_ID = "GUEST"; // Will update to UUID upon login
+let USER_ID = "GUEST"; 
 
 let viewingDate = new Date();
 let chartsInstance = {};
@@ -840,6 +846,19 @@ window.onload = async () => {
 
   // Listen for auth changes
   supabase.auth.onAuthStateChange(async (event, session) => {
+    // Password Reset Flow
+    if (event === 'PASSWORD_RECOVERY') {
+       const newPassword = prompt("Please enter your new password:");
+       if (newPassword) {
+           const { error } = await supabase.auth.updateUser({ password: newPassword });
+           if (error) {
+               alert("Error updating password: " + error.message);
+           } else {
+               alert("Password updated successfully! You can now use your new password.");
+           }
+       }
+    }
+    
     if (event === 'SIGNED_IN') {
        currentUser = session.user;
        USER_ID = currentUser.id.substring(0,8).toUpperCase();
@@ -871,10 +890,12 @@ async function handleAuth(action) {
   if (action === 'signup') {
     const { data, error } = await supabase.auth.signUp({ email, password });
     err = error;
-    if(!error && data.user && data.user.identities.length === 0) {
+    if(!error && data.user && data.user.identities && data.user.identities.length === 0) {
         err = { message: "User already exists. Please log in." };
     } else if (!error) {
-        alert('Signup successful! (If email confirmations are off, you will be logged in automatically).');
+        alert('Signup successful! Please check your email inbox (and spam folder) for a confirmation link to activate your account.');
+        document.getElementById('authEmail').value = '';
+        document.getElementById('authPassword').value = '';
     }
   } else {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -885,6 +906,34 @@ async function handleAuth(action) {
   document.getElementById('authModal').style.opacity = '1';
 
   if (err) { errEl.innerText = err.message; errEl.style.display = 'block'; }
+}
+
+async function handleForgotPassword(e) {
+  e.preventDefault();
+  const email = document.getElementById('authEmail').value;
+  const errEl = document.getElementById('authError');
+  errEl.style.display = 'none';
+
+  if(!email) { 
+    errEl.innerText = 'Please enter your email address first.'; 
+    errEl.style.display = 'block'; 
+    return; 
+  }
+
+  document.getElementById('authModal').style.pointerEvents = 'none';
+  document.getElementById('authModal').style.opacity = '0.7';
+
+  const { data, error } = await supabase.auth.resetPasswordForEmail(email);
+
+  document.getElementById('authModal').style.pointerEvents = 'all';
+  document.getElementById('authModal').style.opacity = '1';
+
+  if (error) {
+    errEl.innerText = error.message; 
+    errEl.style.display = 'block';
+  } else {
+    alert('Password reset link has been securely sent to your email. You can use it to login and reset your password.');
+  }
 }
 
 async function handleLogout() {
@@ -1631,7 +1680,8 @@ async function generateProfessionalPDF() {
     await new Promise(r => setTimeout(r, 100));
   }
   updateCharts();
-  await new Promise(r => setTimeout(r, 400));
+  
+  await new Promise(r => setTimeout(r, 1200));
 
   const totalComp = appData.habits.reduce((s,h) => s + (h.logs ? Object.keys(h.logs).length : 0), 0);
   const totalHabits = appData.habits.length;
@@ -1813,8 +1863,7 @@ async function generateProfessionalPDF() {
     filename: `SmartGoals_${(appData.userName||'report').replace(/\s+/g,'_')}.pdf`,
     image: { type:'jpeg', quality: 1 },
     html2canvas: { scale: 2, useCORS: true, logging: false },
-    jsPDF: { unit:'in', format:'a4', orientation:'portrait' },
-    pagebreak: { mode: ['css','legacy'] }
+    jsPDF: { unit:'px', format: [794, 1122], orientation:'portrait' }
   };
 
   try {
