@@ -507,7 +507,7 @@ body { padding: 24px; overflow-x: hidden; transition: background-color .3s, colo
     <symbol id="i-droplet" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0L12 2.69z"/></symbol>
     <symbol id="i-folder" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></symbol>
     <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
-    <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol>
     <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6h14z"/><path d="M10 11v6M14 11v6"/></symbol>
     <symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></symbol>
@@ -534,7 +534,7 @@ body { padding: 24px; overflow-x: hidden; transition: background-color .3s, colo
     </div>
     <div class="modal-title" style="text-align:center;">Welcome to Smart Goals</div>
     <div class="modal-desc" style="text-align:center; margin-bottom: 24px;">Log in or sign up to securely sync your data.</div>
-    <input type="email" id="authEmail" class="modal-input" placeholder="Email address">
+    <input type="text" id="authEmail" class="modal-input" placeholder="Email address" autocapitalize="none">
     <input type="password" id="authPassword" class="modal-input" placeholder="Password" style="margin-bottom: 6px;">
     
     <div style="text-align: right; margin-bottom: 14px;">
@@ -860,16 +860,14 @@ window.onload = async () => {
     document.getElementById('authModal').style.display = 'flex';
   }
 
- // Listen for auth changes
+  // Listen for auth changes
   supabase.auth.onAuthStateChange(async (event, session) => {
     if (sessionStorage.getItem('admin_secret') === 'true') return;
 
-    // Catches the password reset event
     if (event === 'PASSWORD_RECOVERY') {
-       // Hide the login modal if it's open
+       // Hide the modal completely before prompt
        document.getElementById('authModal').style.display = 'none';
        
-       // Prompt for new password
        const newPassword = prompt("Authentication verified! Please enter your NEW password:");
        if (newPassword) {
            const { error } = await supabase.auth.updateUser({ password: newPassword });
@@ -878,6 +876,8 @@ window.onload = async () => {
            } else {
                alert("Password updated successfully!");
            }
+       } else {
+           alert("Password update cancelled. You are logged in, but your password was not changed.");
        }
     }
     
@@ -904,8 +904,8 @@ function initializeAdmin() {
     document.getElementById('trackerIdDisplay').innerText = `ID-ADMIN`;
     document.getElementById('authModal').style.display = 'none';
     
-    loadLocalData(); // Loads localstorage directly
-    appData.userName = "Abhik Dutta"; // Enforce Admin Name
+    loadLocalData(); 
+    appData.userName = "Abhik Dutta"; 
     
     buildThemeSelector();
     setTheme(appData.theme);
@@ -928,7 +928,7 @@ function initializeAdmin() {
 }
 
 async function handleAuth(action) {
-  const email = document.getElementById('authEmail').value;
+  const email = document.getElementById('authEmail').value.trim();
   const password = document.getElementById('authPassword').value;
   const errEl = document.getElementById('authError');
   errEl.style.display = 'none';
@@ -936,7 +936,7 @@ async function handleAuth(action) {
   if(!email || !password) { errEl.innerText = 'Please enter email and password.'; errEl.style.display = 'block'; return; }
 
   // SECRET ADMIN CHECK
-  if (email === 'admin' && password === 'admin@123') {
+  if (email.toLowerCase() === 'admin' && password === 'admin@123') {
       sessionStorage.setItem('admin_secret', 'true');
       initializeAdmin();
       return;
@@ -947,15 +947,16 @@ async function handleAuth(action) {
   document.getElementById('authModal').style.opacity = '0.7';
 
   if (action === 'signup') {
+    sessionStorage.setItem('last_auth_action', 'signup');
     const { data, error } = await supabase.auth.signUp({ email, password });
     err = error;
     if(!error && data.user && data.user.identities && data.user.identities.length === 0) {
         err = { message: "User already exists. Please log in." };
     } else if (!error) {
-        alert('Signup successful! Check your email inbox for a confirmation link (or 6-digit code) to activate your account.');
-        document.getElementById('authEmail').value = '';
+        alert('Signup successful! Check your email inbox for a 6-digit confirmation code to activate your account.');
+        document.getElementById('authEmail').value = email; 
         document.getElementById('authPassword').value = '';
-        document.getElementById('otpToggleLink').style.display = 'inline-block';
+        showOtpField(new Event('click'));
     }
   } else {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -969,15 +970,15 @@ async function handleAuth(action) {
 }
 
 function showOtpField(e) {
-    e.preventDefault();
+    if(e) e.preventDefault();
     document.getElementById('otpSection').style.display = 'block';
     document.getElementById('otpToggleLink').style.display = 'none';
     document.getElementById('authButtonsSection').style.display = 'none';
 }
 
 async function handleVerifyOtp() {
-    const email = document.getElementById('authEmail').value;
-    const token = document.getElementById('authOtp').value;
+    const email = document.getElementById('authEmail').value.trim();
+    const token = document.getElementById('authOtp').value.trim();
     const errEl = document.getElementById('authError');
     errEl.style.display = 'none';
 
@@ -986,10 +987,17 @@ async function handleVerifyOtp() {
     document.getElementById('authModal').style.pointerEvents = 'none';
     document.getElementById('authModal').style.opacity = '0.7';
 
-    let { error } = await supabase.auth.verifyOtp({ email, token, type: 'signup' });
-    if (error) {
-        const rec = await supabase.auth.verifyOtp({ email, token, type: 'recovery' });
-        error = rec.error;
+    // Verify token using proper type tracked in session to prevent invalid token burns
+    const primaryType = sessionStorage.getItem('last_auth_action') || 'signup';
+    let { error } = await supabase.auth.verifyOtp({ email, token, type: primaryType });
+    
+    // Safely attempt the fallback if the type was mismatched from an older session
+    if (error && error.message.includes("Token")) {
+        const fallbackType = primaryType === 'signup' ? 'recovery' : 'signup';
+        const fallback = await supabase.auth.verifyOtp({ email, token, type: fallbackType });
+        if (!fallback.error) {
+            error = null;
+        }
     }
 
     document.getElementById('authModal').style.pointerEvents = 'all';
@@ -1006,7 +1014,7 @@ async function handleVerifyOtp() {
 
 async function handleForgotPassword(e) {
   e.preventDefault();
-  const email = document.getElementById('authEmail').value;
+  const email = document.getElementById('authEmail').value.trim();
   const errEl = document.getElementById('authError');
   errEl.style.display = 'none';
 
@@ -1019,6 +1027,7 @@ async function handleForgotPassword(e) {
   document.getElementById('authModal').style.pointerEvents = 'none';
   document.getElementById('authModal').style.opacity = '0.7';
 
+  sessionStorage.setItem('last_auth_action', 'recovery');
   const { data, error } = await supabase.auth.resetPasswordForEmail(email);
 
   document.getElementById('authModal').style.pointerEvents = 'all';
@@ -1028,8 +1037,8 @@ async function handleForgotPassword(e) {
     errEl.innerText = error.message; 
     errEl.style.display = 'block';
   } else {
-    alert('Password reset link sent to your email.');
-    document.getElementById('otpToggleLink').style.display = 'inline-block';
+    alert('A 6-digit recovery code has been sent to your email.');
+    showOtpField(new Event('click'));
   }
 }
 
