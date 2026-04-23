@@ -860,18 +860,23 @@ window.onload = async () => {
     document.getElementById('authModal').style.display = 'flex';
   }
 
-  // Listen for auth changes
+ // Listen for auth changes
   supabase.auth.onAuthStateChange(async (event, session) => {
     if (sessionStorage.getItem('admin_secret') === 'true') return;
 
+    // Catches the password reset event
     if (event === 'PASSWORD_RECOVERY') {
-       const newPassword = prompt("Please enter your new password:");
+       // Hide the login modal if it's open
+       document.getElementById('authModal').style.display = 'none';
+       
+       // Prompt for new password
+       const newPassword = prompt("Authentication verified! Please enter your NEW password:");
        if (newPassword) {
            const { error } = await supabase.auth.updateUser({ password: newPassword });
            if (error) {
                alert("Error updating password: " + error.message);
            } else {
-               alert("Password updated successfully! You can now use your new password.");
+               alert("Password updated successfully!");
            }
        }
     }
