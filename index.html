@@ -889,6 +889,12 @@ window.onload = async () => {
        await loadCloudData();
     } else if (event === 'SIGNED_OUT') {
        currentUser = null;
+       // Clear auth fields on sign out
+       document.getElementById('authPassword').value = '';
+       document.getElementById('authOtp').value = '';
+       document.getElementById('otpSection').style.display = 'none';
+       document.getElementById('authButtonsSection').style.display = 'flex';
+       document.getElementById('otpToggleLink').style.display = 'inline-block';
        document.getElementById('authModal').style.display = 'flex';
     }
   });
@@ -953,14 +959,25 @@ async function handleAuth(action) {
     if(!error && data.user && data.user.identities && data.user.identities.length === 0) {
         err = { message: "User already exists. Please log in." };
     } else if (!error) {
-        alert('Signup successful! Check your email inbox for a 6-digit confirmation code to activate your account.');
-        document.getElementById('authEmail').value = email; 
-        document.getElementById('authPassword').value = '';
-        showOtpField(new Event('click'));
+        if (data.session) {
+            // Already logged in automatically because email confirmation was OFF
+        } else {
+            alert('Signup successful! Check your email inbox for a 6-digit confirmation code to activate your account.');
+            document.getElementById('authPassword').value = '';
+            showOtpField(new Event('click'));
+        }
     }
   } else {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     err = error;
+    
+    // FIX: The "Brick Wall" login loop where an unverified user tries to login but has no way to re-request the code.
+    if (error && error.message.toLowerCase().includes('email not confirmed')) {
+        await supabase.auth.resend({ type: 'signup', email });
+        err = { message: "Email not confirmed. A new 6-digit code has been sent to your email." };
+        sessionStorage.setItem('last_auth_action', 'signup');
+        showOtpField(new Event('click'));
+    }
   }
 
   document.getElementById('authModal').style.pointerEvents = 'all';
@@ -997,6 +1014,8 @@ async function handleVerifyOtp() {
         const fallback = await supabase.auth.verifyOtp({ email, token, type: fallbackType });
         if (!fallback.error) {
             error = null;
+        } else {
+            error = fallback.error; // properly display the fallback error
         }
     }
 
@@ -1009,6 +1028,8 @@ async function handleVerifyOtp() {
     } else {
         alert("Verification successful!");
         document.getElementById('otpSection').style.display = 'none';
+        document.getElementById('authPassword').value = '';
+        document.getElementById('authOtp').value = '';
     }
 }
 
