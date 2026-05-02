@@ -11,7 +11,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 :root {
@@ -509,7 +508,7 @@ body { padding: 24px; overflow-x: hidden; transition: background-color .3s, colo
     <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
     <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol>
     <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6h14z"/><path d="M10 11v6M14 11v6"/></symbol>
-    <symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1-1-4 12.5-12.5z"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></symbol>
     <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></symbol>
     <symbol id="i-note" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></symbol>
@@ -526,39 +525,6 @@ body { padding: 24px; overflow-x: hidden; transition: background-color .3s, colo
     <symbol id="i-jug" viewBox="0 0 24 24"><path d="M6 7h12v13a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2z"/><path d="M8 7V4h8v3M6 12h12"/></symbol>
   </defs>
 </svg>
-
-<div class="custom-modal-overlay" id="authModal" style="background: var(--bg); opacity: 1; pointer-events: all; z-index: 3000;">
-  <div class="custom-modal" style="transform: translateY(0) scale(1);">
-    <div style="display:flex; justify-content:center; margin-bottom: 20px;">
-       <div class="logo-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
-    </div>
-    <div class="modal-title" style="text-align:center;">Welcome to Smart Goals</div>
-    <div class="modal-desc" style="text-align:center; margin-bottom: 24px;">Log in or sign up to securely sync your data.</div>
-    <input type="text" id="authEmail" class="modal-input" placeholder="Email address" autocapitalize="none">
-    <input type="password" id="authPassword" class="modal-input" placeholder="Password" style="margin-bottom: 6px;">
-    
-    <div style="text-align: right; margin-bottom: 14px;">
-      <a href="#" onclick="handleForgotPassword(event)" style="font-size: 11px; color: var(--primary); text-decoration: none; font-weight: 500;">Forgot password?</a>
-    </div>
-
-    <div id="otpSection" style="display:none; margin-bottom: 14px;">
-       <input type="text" id="authOtp" class="modal-input" placeholder="Enter 6-digit code">
-       <button class="btn btn-primary" style="width: 100%; justify-content:center;" onclick="handleVerifyOtp()">Verify Code</button>
-    </div>
-
-    <div id="authError" style="color: var(--danger); font-size: 12px; margin-bottom: 10px; text-align: center; display:none;"></div>
-    
-    <div style="display: flex; gap: 8px; flex-direction: column;" id="authButtonsSection">
-      <button class="btn btn-primary" style="width: 100%; justify-content:center;" onclick="handleAuth('login')">Log In</button>
-      <button class="btn btn-ghost" style="width: 100%; justify-content:center;" onclick="handleAuth('signup')">Sign Up</button>
-    </div>
-
-    <div style="text-align: center; margin-top: 14px;">
-      <a href="#" id="otpToggleLink" onclick="showOtpField(event)" style="display:none; font-size: 11px; color: var(--text-3); text-decoration: none; font-weight: 500;">Have a 6-digit code?</a>
-    </div>
-
-  </div>
-</div>
 
 <div class="custom-modal-overlay" id="appModal">
   <div class="custom-modal">
@@ -603,7 +569,6 @@ body { padding: 24px; overflow-x: hidden; transition: background-color .3s, colo
     <div class="top-controls">
       <div style="display:flex; gap:8px; align-items:center;">
           <div class="theme-selector" id="themeSelector"></div>
-          <button class="btn btn-sm btn-ghost" onclick="handleLogout()" style="padding: 6px;" title="Log Out"><svg class="ic" style="margin:0;"><use href="#i-flag"/></svg></button>
       </div>
       <div id="syncStatus" class="sync-badge synced"><span class="sync-dot"></span>Synced locally</div>
     </div>
@@ -786,21 +751,16 @@ body { padding: 24px; overflow-x: hidden; transition: background-color .3s, colo
 
 <script>
 // =============================================================
-// Supabase Integration & Global State
+// Local Storage Integration & Global State
 // =============================================================
-const supabaseUrl = 'https://ubweukujaabnfgamdesf.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVid2V1a3VqYWFibmZnYW1kZXNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY4OTE2NTEsImV4cCI6MjA5MjQ2NzY1MX0.Bj154vXOKS52RuAGyyI_tu1qjVgC_kWdQicPRAsNlDw';
-const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-let currentUser = null;
-let USER_ID = "GUEST"; 
+let USER_ID = "LOCAL"; 
 
 let viewingDate = new Date();
 let chartsInstance = {};
 let draggedHabitId = null;
 let ctxTarget = { habitId: null, dateStr: null };
 let activeModalResolver = null;
-let autoSyncTimer = null;
 let currentHabitSubView = 'view-month';
 
 const themes = {
@@ -842,76 +802,19 @@ window.onload = async () => {
     }
   });
 
-  // 1. Secret Admin Local Bypass Check
-  if (sessionStorage.getItem('admin_secret') === 'true') {
-     initializeAdmin();
-     return; // Stop supabase flow
-  }
-
-  // 2. Normal Supabase Auth Flow
-  const { data: { session } } = await supabase.auth.getSession();
-  if (session) {
-    currentUser = session.user;
-    USER_ID = currentUser.id.substring(0,8).toUpperCase(); 
-    document.getElementById('trackerIdDisplay').innerText = `ID-${USER_ID}`;
-    document.getElementById('authModal').style.display = 'none';
-    await loadCloudData();
-  } else {
-    document.getElementById('authModal').style.display = 'flex';
-  }
-
-  // Listen for auth changes
-  supabase.auth.onAuthStateChange(async (event, session) => {
-    if (sessionStorage.getItem('admin_secret') === 'true') return;
-
-    if (event === 'PASSWORD_RECOVERY') {
-       // Hide the modal completely before prompt
-       document.getElementById('authModal').style.display = 'none';
-       
-       const newPassword = prompt("Authentication verified! Please enter your NEW password:");
-       if (newPassword) {
-           const { error } = await supabase.auth.updateUser({ password: newPassword });
-           if (error) {
-               alert("Error updating password: " + error.message);
-           } else {
-               alert("Password updated successfully!");
-           }
-       } else {
-           alert("Password update cancelled. You are logged in, but your password was not changed.");
-       }
-    }
-    
-    if (event === 'SIGNED_IN') {
-       currentUser = session.user;
-       USER_ID = currentUser.id.substring(0,8).toUpperCase();
-       document.getElementById('trackerIdDisplay').innerText = `ID-${USER_ID}`;
-       document.getElementById('authModal').style.display = 'none';
-       await loadCloudData();
-    } else if (event === 'SIGNED_OUT') {
-       currentUser = null;
-       // Clear auth fields on sign out
-       document.getElementById('authPassword').value = '';
-       document.getElementById('authOtp').value = '';
-       document.getElementById('otpSection').style.display = 'none';
-       document.getElementById('authButtonsSection').style.display = 'flex';
-       document.getElementById('otpToggleLink').style.display = 'inline-block';
-       document.getElementById('authModal').style.display = 'flex';
-    }
-  });
+  initializeLocalApp();
 };
 
-// =============================================================
-// Auth & Cloud Sync Functions
-// =============================================================
-
-function initializeAdmin() {
-    currentUser = { id: 'admin_local', email: 'admin' };
-    USER_ID = "ADMIN";
-    document.getElementById('trackerIdDisplay').innerText = `ID-ADMIN`;
-    document.getElementById('authModal').style.display = 'none';
+function initializeLocalApp() {
+    let savedId = localStorage.getItem('sg_user_id');
+    if (!savedId) {
+        savedId = Math.random().toString(36).substring(2, 10).toUpperCase();
+        localStorage.setItem('sg_user_id', savedId);
+    }
+    USER_ID = savedId;
+    document.getElementById('trackerIdDisplay').innerText = `ID-${USER_ID}`;
     
     loadLocalData(); 
-    appData.userName = "Abhik Dutta"; 
     
     buildThemeSelector();
     setTheme(appData.theme);
@@ -933,147 +836,8 @@ function initializeAdmin() {
     updateUI();
 }
 
-async function handleAuth(action) {
-  const email = document.getElementById('authEmail').value.trim();
-  const password = document.getElementById('authPassword').value;
-  const errEl = document.getElementById('authError');
-  errEl.style.display = 'none';
-
-  if(!email || !password) { errEl.innerText = 'Please enter email and password.'; errEl.style.display = 'block'; return; }
-
-  // SECRET ADMIN CHECK
-  if (email.toLowerCase() === 'admin' && password === 'admin@123') {
-      sessionStorage.setItem('admin_secret', 'true');
-      initializeAdmin();
-      return;
-  }
-
-  let err = null;
-  document.getElementById('authModal').style.pointerEvents = 'none';
-  document.getElementById('authModal').style.opacity = '0.7';
-
-  if (action === 'signup') {
-    sessionStorage.setItem('last_auth_action', 'signup');
-    const { data, error } = await supabase.auth.signUp({ email, password });
-    err = error;
-    if(!error && data.user && data.user.identities && data.user.identities.length === 0) {
-        err = { message: "User already exists. Please log in." };
-    } else if (!error) {
-        if (data.session) {
-            // Already logged in automatically because email confirmation was OFF
-        } else {
-            alert('Signup successful! Check your email inbox for a 6-digit confirmation code to activate your account.');
-            document.getElementById('authPassword').value = '';
-            showOtpField(new Event('click'));
-        }
-    }
-  } else {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    err = error;
-    
-    // FIX: The "Brick Wall" login loop where an unverified user tries to login but has no way to re-request the code.
-    if (error && error.message.toLowerCase().includes('email not confirmed')) {
-        await supabase.auth.resend({ type: 'signup', email });
-        err = { message: "Email not confirmed. A new 6-digit code has been sent to your email." };
-        sessionStorage.setItem('last_auth_action', 'signup');
-        showOtpField(new Event('click'));
-    }
-  }
-
-  document.getElementById('authModal').style.pointerEvents = 'all';
-  document.getElementById('authModal').style.opacity = '1';
-
-  if (err) { errEl.innerText = err.message; errEl.style.display = 'block'; }
-}
-
-function showOtpField(e) {
-    if(e) e.preventDefault();
-    document.getElementById('otpSection').style.display = 'block';
-    document.getElementById('otpToggleLink').style.display = 'none';
-    document.getElementById('authButtonsSection').style.display = 'none';
-}
-
-async function handleVerifyOtp() {
-    const email = document.getElementById('authEmail').value.trim();
-    const token = document.getElementById('authOtp').value.trim();
-    const errEl = document.getElementById('authError');
-    errEl.style.display = 'none';
-
-    if(!email || !token) { errEl.innerText = 'Email and 6-digit code required.'; errEl.style.display = 'block'; return; }
-
-    document.getElementById('authModal').style.pointerEvents = 'none';
-    document.getElementById('authModal').style.opacity = '0.7';
-
-    // Verify token using proper type tracked in session to prevent invalid token burns
-    const primaryType = sessionStorage.getItem('last_auth_action') || 'signup';
-    let { error } = await supabase.auth.verifyOtp({ email, token, type: primaryType });
-    
-    // Safely attempt the fallback if the type was mismatched from an older session
-    if (error && error.message.includes("Token")) {
-        const fallbackType = primaryType === 'signup' ? 'recovery' : 'signup';
-        const fallback = await supabase.auth.verifyOtp({ email, token, type: fallbackType });
-        if (!fallback.error) {
-            error = null;
-        } else {
-            error = fallback.error; // properly display the fallback error
-        }
-    }
-
-    document.getElementById('authModal').style.pointerEvents = 'all';
-    document.getElementById('authModal').style.opacity = '1';
-
-    if (error) {
-        errEl.innerText = error.message; 
-        errEl.style.display = 'block';
-    } else {
-        alert("Verification successful!");
-        document.getElementById('otpSection').style.display = 'none';
-        document.getElementById('authPassword').value = '';
-        document.getElementById('authOtp').value = '';
-    }
-}
-
-async function handleForgotPassword(e) {
-  e.preventDefault();
-  const email = document.getElementById('authEmail').value.trim();
-  const errEl = document.getElementById('authError');
-  errEl.style.display = 'none';
-
-  if(!email) { 
-    errEl.innerText = 'Please enter your email address first.'; 
-    errEl.style.display = 'block'; 
-    return; 
-  }
-
-  document.getElementById('authModal').style.pointerEvents = 'none';
-  document.getElementById('authModal').style.opacity = '0.7';
-
-  sessionStorage.setItem('last_auth_action', 'recovery');
-  const { data, error } = await supabase.auth.resetPasswordForEmail(email);
-
-  document.getElementById('authModal').style.pointerEvents = 'all';
-  document.getElementById('authModal').style.opacity = '1';
-
-  if (error) {
-    errEl.innerText = error.message; 
-    errEl.style.display = 'block';
-  } else {
-    alert('A 6-digit recovery code has been sent to your email.');
-    showOtpField(new Event('click'));
-  }
-}
-
-async function handleLogout() {
-   if (sessionStorage.getItem('admin_secret') === 'true') {
-       sessionStorage.removeItem('admin_secret');
-       location.reload();
-       return;
-   }
-   await supabase.auth.signOut();
-}
-
 function loadLocalData() {
-  const local = localStorage.getItem(`sg_data_ADMIN`);
+  const local = localStorage.getItem(`sg_data_LOCAL`);
   if(!local) return;
   try {
     const parsed = JSON.parse(local);
@@ -1084,65 +848,14 @@ function loadLocalData() {
   } catch(e) { console.warn('load failed', e); }
 }
 
-async function loadCloudData() {
-   const { data, error } = await supabase.from('user_data').select('app_state').eq('id', currentUser.id).single();
-   
-   if (data && data.app_state) {
-      appData = Object.assign({}, appData, data.app_state);
-      if (!appData.bmi) appData.bmi = { enabled:false, height:170, weight:65, age:28, sex:'m' };
-      if (!appData.water) appData.water = { enabled:false, activity:'mod', climate:'temperate', goalMl:2500, byDay:{} };
-      if (!appData.avatar) appData.avatar = 'default';
-   } else if (error && error.code !== 'PGRST116') {
-      console.error("Error loading data:", error);
-   }
-
-   buildThemeSelector();
-   setTheme(appData.theme);
-   setAvatar(appData.avatar || 'default');
-   document.getElementById('userNameInput').value = appData.userName;
-   document.getElementById('bmiHeight').value = appData.bmi.height;
-   document.getElementById('bmiWeight').value = appData.bmi.weight;
-   document.getElementById('bmiAge').value = appData.bmi.age;
-   document.getElementById('bmiSex').value = appData.bmi.sex;
-   document.getElementById('waterActivity').value = appData.water.activity;
-   document.getElementById('waterClimate').value = appData.water.climate;
-   if (appData.bmi.enabled) document.getElementById('bmiSwitch').classList.add('on');
-   if (appData.water.enabled) document.getElementById('waterSwitch').classList.add('on');
-   computeBMI();
-   recalcWaterGoal();
-   updateUI();
-}
-
 function markDataChanged(rebuildUI = true) {
   appData.userName = document.getElementById('userNameInput').value;
   appData.lastUpdated = Date.now();
   
-  if (currentUser && currentUser.id === 'admin_local') {
-      localStorage.setItem(`sg_data_ADMIN`, JSON.stringify(appData));
-      updateSyncStatus('<span class="sync-dot"></span>Saved locally', 'synced');
-      if(rebuildUI) updateUI();
-      return;
-  }
-
-  updateSyncStatus('<span class="sync-dot"></span>Syncing to cloud…', 'syncing');
-  if(rebuildUI) updateUI();
+  localStorage.setItem(`sg_data_LOCAL`, JSON.stringify(appData));
+  updateSyncStatus('<span class="sync-dot"></span>Saved locally', 'synced');
   
-  clearTimeout(autoSyncTimer);
-  autoSyncTimer = setTimeout(async () => {
-     if (currentUser) {
-        const { error } = await supabase.from('user_data').upsert({
-           id: currentUser.id,
-           app_state: appData,
-           updated_at: new Date().toISOString()
-        });
-        if (error) {
-           updateSyncStatus('<span class="sync-dot"></span>Sync Error', 'syncing');
-           console.error(error);
-        } else {
-           updateSyncStatus('<span class="sync-dot"></span>Synced locally', 'synced');
-        }
-     }
-  }, 1000);
+  if(rebuildUI) updateUI();
 }
 
 function updateSyncStatus(msg, stateClass) {
