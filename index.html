@@ -50,6 +50,17 @@ body { padding: 24px; overflow-x: hidden; letter-spacing: -0.005em; }
 
 .dashboard { max-width: 1240px; margin: 0 auto; }
 
+/* ===== Backup Banner ===== */
+.backup-banner {
+  display: none; justify-content: space-between; align-items: center;
+  background: var(--primary-bg); border: 1px solid var(--primary-light);
+  color: var(--primary-ink); padding: 10px 16px; border-radius: var(--radius-sm);
+  margin-bottom: 20px; font-size: 13px; font-weight: 500; animation: fadeIn .3s;
+}
+.backup-banner button { background: var(--primary); color: white; border: none; padding: 6px 12px; border-radius: var(--radius-xs); cursor: pointer; font-weight: 600; font-size: 12px; transition: .2s; }
+.backup-banner button:hover { opacity: .9; }
+.backup-banner .dismiss { background: transparent; color: var(--primary-ink); border: 1px solid currentColor; margin-left: 8px; }
+
 /* ===== Icon system ===== */
 .ic { width: 16px; height: 16px; stroke-width: 1.75; stroke: currentColor; fill: none; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; display: inline-block; vertical-align: -3px;}
 .ic-lg { width: 20px; height: 20px; }
@@ -428,65 +439,64 @@ body { padding: 24px; overflow-x: hidden; letter-spacing: -0.005em; }
 /* ===================================================
    PDF — Executive Report
    =================================================== */
-#hiddenPdfTemplate { display: none; background: #ffffff; color: #09090b; }
-.pdf-page { width: 794px; height: 1122px; overflow: hidden; padding: 44px 48px; box-sizing: border-box; background: white; margin: 0 auto; page-break-after: always; position: relative; font-family: 'Inter', sans-serif; }
+#hiddenPdfTemplate { display: none; background: #ffffff; color: #09090b; font-family: 'Inter', sans-serif; }
+.pdf-page { width: 794px; min-height: 1122px; padding: 44px 48px; box-sizing: border-box; background: white; margin: 0 auto; page-break-after: always; position: relative; }
 .pdf-page:last-child { page-break-after: avoid; }
 
 /* Cover */
-.pdf-cover { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white; display: flex; flex-direction: column; }
-.pdf-cover .brand { font-size: 11px; letter-spacing: 0.3em; opacity: .7; font-weight: 600; text-transform: uppercase; }
-.pdf-cover h1 { font-size: 48px; font-weight: 800; letter-spacing: -0.03em; margin-top: 20px; line-height: 1.05; }
-.pdf-cover .subtitle { font-size: 16px; opacity: .7; margin-top: 10px; font-weight: 400; }
-.pdf-cover .meta-grid { margin-top: 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,.15); }
-.pdf-cover .meta-label { font-size: 10px; letter-spacing: 0.15em; opacity: .6; font-weight: 600; text-transform: uppercase; }
-.pdf-cover .meta-val { font-size: 18px; font-weight: 600; margin-top: 6px; }
-.pdf-cover .footer-mark { position: absolute; bottom: 40px; left: 48px; right: 48px; display: flex; justify-content: space-between; font-size: 10px; opacity: .5; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; }
+.pdf-cover { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white; display: flex; flex-direction: column; padding: 0; height: 1122px; }
+.pdf-cover-inner { padding: 60px 48px; width: 100%; height: 100%; box-sizing: border-box; position: relative; }
+.pdf-cover .brand { font-size: 13px; letter-spacing: 0.3em; opacity: .7; font-weight: 600; text-transform: uppercase; }
+.pdf-cover h1 { font-size: 54px; font-weight: 800; letter-spacing: -0.03em; margin-top: 24px; line-height: 1.05; }
+.pdf-cover .subtitle { font-size: 18px; opacity: .7; margin-top: 12px; font-weight: 400; }
+.pdf-cover .meta-grid { margin-top: 100px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,.15); }
+.pdf-cover .meta-label { font-size: 12px; letter-spacing: 0.15em; opacity: .6; font-weight: 600; text-transform: uppercase; }
+.pdf-cover .meta-val { font-size: 22px; font-weight: 600; margin-top: 8px; }
+.pdf-cover .footer-mark { position: absolute; bottom: 40px; left: 48px; right: 48px; display: flex; justify-content: space-between; font-size: 11px; opacity: .5; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; }
 
 /* Page template */
-.pdf-page-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 14px; border-bottom: 1px solid #e4e4e7; margin-bottom: 24px; }
-.pdf-page-header .logo-row { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 13px; }
-.pdf-page-header .logo-row svg { width: 16px; height: 16px; }
-.pdf-page-num { font-size: 10px; color: #71717a; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; }
+.pdf-page-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 1px solid #e4e4e7; margin-bottom: 28px; }
+.pdf-page-header .logo-row { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; }
+.pdf-page-header .logo-row svg { width: 18px; height: 18px; }
+.pdf-page-num { font-size: 12px; color: #71717a; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; }
 
-.pdf-h1 { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 4px; }
-.pdf-h2 { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; margin: 20px 0 12px; padding-bottom: 6px; border-bottom: 1px solid #e4e4e7; }
-.pdf-section-label { font-size: 10px; font-weight: 600; color: #71717a; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 6px; }
+.pdf-h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 6px; }
+.pdf-h2 { font-size: 18px; font-weight: 700; letter-spacing: -0.01em; margin: 24px 0 14px; padding-bottom: 8px; border-bottom: 1px solid #e4e4e7; }
+.pdf-section-label { font-size: 12px; font-weight: 600; color: #71717a; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 8px; }
 
 /* Table of Contents */
-.pdf-toc { margin-top: 20px; }
-.pdf-toc-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dotted #d4d4d8; font-size: 13px; }
-.pdf-toc-item .num { font-family: 'JetBrains Mono', monospace; color: #71717a; font-weight: 500; width: 28px; }
+.pdf-toc { margin-top: 24px; }
+.pdf-toc-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dotted #d4d4d8; font-size: 15px; }
+.pdf-toc-item .num { font-family: 'JetBrains Mono', monospace; color: #71717a; font-weight: 500; width: 32px; }
 .pdf-toc-item .title { flex: 1; color: #09090b; font-weight: 500; }
 .pdf-toc-item .page { color: #71717a; font-variant-numeric: tabular-nums; }
 
 /* Exec summary stats */
-.pdf-stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 16px 0 24px; }
-.pdf-stat-card { background: #fafafa; border: 1px solid #e4e4e7; border-radius: 8px; padding: 14px; }
-.pdf-stat-card .lbl { font-size: 9px; color: #71717a; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
-.pdf-stat-card .v { font-size: 22px; font-weight: 800; margin-top: 6px; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.pdf-stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 20px 0 28px; }
+.pdf-stat-card { background: #fafafa; border: 1px solid #e4e4e7; border-radius: 8px; padding: 18px; }
+.pdf-stat-card .lbl { font-size: 11px; color: #71717a; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+.pdf-stat-card .v { font-size: 26px; font-weight: 800; margin-top: 8px; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
 
-.pdf-insight { background: #eef2ff; border-left: 3px solid #6366f1; padding: 14px 16px; border-radius: 0 8px 8px 0; margin-bottom: 20px; font-size: 12px; line-height: 1.55; color: #09090b; }
+.pdf-insight { background: #eef2ff; border-left: 4px solid #6366f1; padding: 18px 20px; border-radius: 0 8px 8px 0; margin-bottom: 24px; font-size: 14px; line-height: 1.6; color: #09090b; }
 .pdf-insight strong { color: #4338ca; }
 
 /* Per-habit rows */
-.pdf-habit-card { background: #fafafa; border: 1px solid #e4e4e7; border-radius: 8px; padding: 12px 14px; margin-bottom: 10px; page-break-inside: avoid; }
-.pdf-habit-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-.pdf-habit-name { font-weight: 700; font-size: 13px; display: flex; align-items: center; gap: 8px; }
-.pdf-habit-dot { width: 10px; height: 10px; border-radius: 2px; }
-.pdf-habit-stats { font-size: 11px; color: #52525b; font-variant-numeric: tabular-nums; display: flex; gap: 12px; }
+.pdf-habit-card { background: #fafafa; border: 1px solid #e4e4e7; border-radius: 8px; padding: 16px 18px; margin-bottom: 14px; page-break-inside: avoid; }
+.pdf-habit-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.pdf-habit-name { font-weight: 700; font-size: 15px; display: flex; align-items: center; gap: 10px; }
+.pdf-habit-dot { width: 12px; height: 12px; border-radius: 3px; }
+.pdf-habit-stats { font-size: 12px; color: #52525b; font-variant-numeric: tabular-nums; display: flex; gap: 14px; }
 .pdf-habit-stats .stat-n { color: #09090b; font-weight: 700; }
-.pdf-habit-bar { width: 100%; height: 5px; background: #e4e4e7; border-radius: 999px; overflow: hidden; }
+.pdf-habit-bar { width: 100%; height: 6px; background: #e4e4e7; border-radius: 999px; overflow: hidden; }
 .pdf-habit-bar > div { height: 100%; border-radius: 999px; }
-.pdf-habit-heatmap { display: grid; grid-template-columns: repeat(31, 1fr); gap: 2px; margin-top: 8px; }
+.pdf-habit-heatmap { display: grid; grid-template-columns: repeat(31, 1fr); gap: 3px; margin-top: 10px; }
 .pdf-heatcell { aspect-ratio: 1; border-radius: 2px; background: #e4e4e7; }
-.pdf-notes { font-size: 10px; color: #52525b; background: #f4f4f5; padding: 6px 8px; border-radius: 4px; margin-top: 8px; line-height: 1.5; }
+.pdf-notes { font-size: 12px; color: #52525b; background: #f4f4f5; padding: 8px 10px; border-radius: 6px; margin-top: 10px; line-height: 1.5; }
 
-.pdf-chart-box { page-break-inside: avoid; background: #fafafa; border: 1px solid #e4e4e7; border-radius: 8px; padding: 14px; margin-bottom: 12px; }
+.pdf-chart-box { page-break-inside: avoid; background: #fafafa; border: 1px solid #e4e4e7; border-radius: 8px; padding: 16px; margin-bottom: 14px; text-align: center; }
 .pdf-chart-box img { max-width: 100%; height: auto; }
 
-.pdf-chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
-.pdf-footer { position: absolute; bottom: 24px; left: 48px; right: 48px; display: flex; justify-content: space-between; font-size: 9px; color: #a1a1aa; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+.pdf-footer { position: absolute; bottom: 30px; left: 48px; right: 48px; display: flex; justify-content: space-between; font-size: 10px; color: #a1a1aa; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
 </style>
 </head>
 <body>
@@ -544,6 +554,14 @@ body { padding: 24px; overflow-x: hidden; letter-spacing: -0.005em; }
 </div>
 
 <div class="dashboard" id="mainDashboard">
+  
+  <div class="backup-banner" id="backupReminder">
+    <span><svg class="ic" style="margin-right:8px; vertical-align:-3px;"><use href="#i-download"/></svg>It's been a while since your last backup. We recommend saving your data safely.</span>
+    <div>
+      <button onclick="exportBackup()">Backup Now</button>
+      <button class="dismiss" onclick="dismissBackupBanner()">Dismiss</button>
+    </div>
+  </div>
 
   <div class="header-section">
     <div class="logo-area">
@@ -787,8 +805,8 @@ let appData = {
   avatar: 'default',
   categories: [{ id:'c1', name:'Fitness & health' }, { id:'c2', name:'Finance & career' }],
   habits: [
-    { id:1, categoryId:'c1', name:'Gym workout', targetDays:60, color:6,  logs:{}, notes:{}, startDate:'' },
-    { id:2, categoryId:'c2', name:'Deep work (2 Hrs)', targetDays:30, color:12, logs:{}, notes:{}, startDate:'' }
+    { id:'h1', categoryId:'c1', name:'Gym workout', targetDays:60, color:6,  logs:{}, notes:{}, startDate:'' },
+    { id:'h2', categoryId:'c2', name:'Deep work (2 Hrs)', targetDays:30, color:12, logs:{}, notes:{}, startDate:'' }
   ],
   bmi:     { enabled:false, height:170, weight:65, age:28, sex:'m' },
   water:   { enabled:false, activity:'mod', climate:'temperate', goalMl:2500, byDay:{} }
@@ -821,6 +839,13 @@ function initializeLocalApp() {
     
     loadLocalData(); 
     
+    // Check backup timing
+    const lastBackup = localStorage.getItem('sg_last_backup') || 0;
+    const daysSinceBackup = (Date.now() - lastBackup) / (1000 * 3600 * 24);
+    if (daysSinceBackup > 7) {
+        document.getElementById('backupReminder').style.display = 'flex';
+    }
+    
     buildThemeSelector();
     applyThemeColors();
     setAvatar(appData.avatar || 'default');
@@ -851,6 +876,11 @@ function loadLocalData() {
     if (!appData.bmi) appData.bmi = { enabled:false, height:170, weight:65, age:28, sex:'m' };
     if (!appData.water) appData.water = { enabled:false, activity:'mod', climate:'temperate', goalMl:2500, byDay:{} };
     if (!appData.avatar) appData.avatar = 'default';
+    
+    // Safety check: ensure all IDs are strings to prevent conflicts
+    if(appData.categories) appData.categories.forEach(c => c.id = String(c.id));
+    if(appData.habits) appData.habits.forEach(h => h.id = String(h.id));
+    
   } catch(e) { console.warn('load failed', e); }
 }
 
@@ -880,6 +910,9 @@ function exportBackup() {
   a.download = `SmartGoals_Backup_${USER_ID}.json`;
   a.click();
   URL.revokeObjectURL(url);
+  
+  localStorage.setItem('sg_last_backup', Date.now());
+  document.getElementById('backupReminder').style.display = 'none';
 }
 
 function importBackup(e) {
@@ -891,6 +924,9 @@ function importBackup(e) {
       const parsed = JSON.parse(ev.target.result);
       if(parsed && parsed.categories && parsed.habits) {
         appData = parsed;
+        // Stringify IDs
+        appData.categories.forEach(c => c.id = String(c.id));
+        appData.habits.forEach(h => h.id = String(h.id));
         markDataChanged();
         applyThemeColors();
         setAvatar(appData.avatar || 'default');
@@ -900,6 +936,11 @@ function importBackup(e) {
   };
   reader.readAsText(file);
   e.target.value = ''; 
+}
+
+function dismissBackupBanner() {
+    document.getElementById('backupReminder').style.display = 'none';
+    localStorage.setItem('sg_last_backup', Date.now()); // Fake a recent backup to snooze
 }
 
 /* ===== Theme & Dark Mode ===== */
@@ -1002,7 +1043,6 @@ function setAvatar(avId) {
   }
 }
 
-
 // =============================================================
 // Modal
 // =============================================================
@@ -1032,7 +1072,10 @@ async function addCategoryPrompt() {
   const inputs = `<input type="text" id="catName" class="modal-input" placeholder="e.g. Self improvement">`;
   if(await openModal("New section", "Create a new category to group your goals.", inputs, "Create")) {
     const val = document.getElementById('catName').value.trim();
-    if(val) { appData.categories.push({ id:'c' + Date.now(), name:val }); markDataChanged(); }
+    if(val) { 
+        appData.categories.push({ id: 'c_' + Date.now().toString(36) + Math.random().toString(36).substr(2, 5), name:val }); 
+        markDataChanged(); 
+    }
   }
 }
 
@@ -1047,7 +1090,16 @@ async function addHabitPrompt() {
     const name = document.getElementById('hName').value.trim();
     const target = parseInt(document.getElementById('hTarget').value) || 30;
     if(name) {
-      appData.habits.push({ id:Date.now(), categoryId:document.getElementById('hCat').value, name, targetDays:target, color:Math.floor(Math.random()*20)+1, logs:{}, notes:{}, startDate:getFormatDate(new Date()) });
+      appData.habits.push({ 
+          id: 'h_' + Date.now().toString(36) + Math.random().toString(36).substr(2, 5), 
+          categoryId:document.getElementById('hCat').value, 
+          name, 
+          targetDays:target, 
+          color:Math.floor(Math.random()*20)+1, 
+          logs:{}, 
+          notes:{}, 
+          startDate:getFormatDate(new Date()) 
+      });
       markDataChanged();
     }
   }
@@ -1058,13 +1110,13 @@ async function addHabitPrompt() {
 // =============================================================
 function handleRightClick(e, habitId, dateStr) {
   e.preventDefault();
-  ctxTarget = { habitId, dateStr };
+  ctxTarget = { habitId: String(habitId), dateStr };
   const menu = document.getElementById('contextMenu');
   menu.style.display = 'flex'; menu.style.left = `${e.pageX}px`; menu.style.top = `${e.pageY}px`;
 }
 function closeContextMenu() { document.getElementById('contextMenu').style.display = 'none'; }
 async function ctxAction(action) {
-  const h = appData.habits.find(x => x.id === ctxTarget.habitId);
+  const h = appData.habits.find(x => String(x.id) === ctxTarget.habitId);
   if(!h) return;
   if(!h.notes) h.notes = {};
   if(action === 'start') { h.startDate = ctxTarget.dateStr; }
@@ -1129,7 +1181,7 @@ function switchHabitSub(subId) {
 }
 
 function toggleLog(habitId, dateStr) {
-  const h = appData.habits.find(x => x.id === habitId);
+  const h = appData.habits.find(x => String(x.id) === String(habitId));
   if(!h) return;
   if(!h.logs) h.logs = {};
   h.logs[dateStr] ? delete h.logs[dateStr] : h.logs[dateStr] = true;
@@ -1139,7 +1191,7 @@ function toggleLog(habitId, dateStr) {
 function renderView(containerId, gridGeneratorFn) {
   const container = document.getElementById(containerId); container.innerHTML = '';
   appData.categories.forEach(cat => {
-    const habitsInCat = appData.habits.filter(h => h.categoryId === cat.id);
+    const habitsInCat = appData.habits.filter(h => String(h.categoryId) === String(cat.id));
     let catHTML = `
       <div class="category-section">
         <div class="category-header">
@@ -1173,7 +1225,7 @@ function generateMonthGrid(habit) {
     const isChecked = habit.logs && habit.logs[dStr] ? `color-${habit.color}` : '';
     const hasNote = habit.notes && habit.notes[dStr] ? 'has-note' : '';
     const classes = `day-box ${(dStr === todayStr) ? 'is-today' : ''} ${isChecked} ${hasNote} ${habit.startDate === dStr ? 'is-start' : ''}`;
-    html += `<div class="${classes}" onclick="toggleLog(${habit.id}, '${dStr}')" oncontextmenu="handleRightClick(event, ${habit.id}, '${dStr}')">${i}</div>`;
+    html += `<div class="${classes}" onclick="toggleLog('${habit.id}', '${dStr}')" oncontextmenu="handleRightClick(event, '${habit.id}', '${dStr}')">${i}</div>`;
   }
   return { html: html + `</div>`, daysArr, preCalcStats:null };
 }
@@ -1220,8 +1272,8 @@ function createHabitCard(habit, gridContent, daysArr, preCalcStats) {
         <div class="habit-stats"><span>View · <span class="stat-num">${stats.comp}</span></span><span>Total · <span class="stat-num">${totalComp}/${habit.targetDays}</span></span></div>
         <div class="progress-bar-bg" title="${overallPct}%"><div class="progress-bar-fill" style="width:${overallPct}%; background-color: ${isGoalMet ? 'var(--success)' : hex};"></div></div>
         <div class="habit-actions">
-          <button onclick="editHabit(${habit.id})"><svg class="ic"><use href="#i-edit"/></svg>Edit</button>
-          <button class="del" onclick="deleteHabitPrompt(${habit.id})"><svg class="ic"><use href="#i-trash"/></svg>Delete</button>
+          <button onclick="editHabit('${habit.id}')"><svg class="ic"><use href="#i-edit"/></svg>Edit</button>
+          <button class="del" onclick="deleteHabitPrompt('${habit.id}')"><svg class="ic"><use href="#i-trash"/></svg>Delete</button>
         </div>
       </div>
       ${gridContent}
@@ -1238,7 +1290,7 @@ function renderWeeklyCards() {
   const weekDates = [];
   for(let i=0; i<7; i++) { const d = new Date(curr); d.setDate(first + i); weekDates.push(getFormatDate(d)); }
   const todayStr = getFormatDate(new Date());
-  const catMap = Object.fromEntries(appData.categories.map(c => [c.id, c.name]));
+  const catMap = Object.fromEntries(appData.categories.map(c => [String(c.id), c.name]));
 
   const cards = appData.habits.map(h => {
     const compThisWeek = weekDates.filter(d => h.logs && h.logs[d]).length;
@@ -1250,7 +1302,7 @@ function renderWeeklyCards() {
     const daysHtml = weekDates.map((d,i) => {
       const isLogged = h.logs && h.logs[d];
       const cls = `weekly-day ${d===todayStr?'is-today':''} ${isLogged?`color-${h.color}`:''}`;
-      return `<div class="${cls}" onclick="toggleLog(${h.id}, '${d}')" oncontextmenu="handleRightClick(event, ${h.id}, '${d}')">
+      return `<div class="${cls}" onclick="toggleLog('${h.id}', '${d}')" oncontextmenu="handleRightClick(event, '${h.id}', '${d}')">
         <span class="dn">${dNamesShort[i][0]}</span><span class="dd">${new Date(d).getDate()}</span>
       </div>`;
     }).join('');
@@ -1259,9 +1311,9 @@ function renderWeeklyCards() {
         <div class="weekly-head">
           <div>
             <div class="weekly-title"><span class="habit-dot" style="background:${hex}"></span>${h.name}</div>
-            <div class="weekly-cat">${catMap[h.categoryId] || ''}</div>
+            <div class="weekly-cat">${catMap[String(h.categoryId)] || ''}</div>
           </div>
-          <button class="btn btn-sm btn-ghost" onclick="editHabit(${h.id})"><svg class="ic"><use href="#i-settings"/></svg></button>
+          <button class="btn btn-sm btn-ghost" onclick="editHabit('${h.id}')"><svg class="ic"><use href="#i-settings"/></svg></button>
         </div>
         <div class="ring-wrap">
           <svg class="ring-svg" width="110" height="110" viewBox="0 0 110 110">
@@ -1287,7 +1339,7 @@ function renderWeeklyCards() {
 // =============================================================
 function renderGoals() {
   const el = document.getElementById('goalsGrid'); if(!el) return;
-  const catMap = Object.fromEntries(appData.categories.map(c => [c.id, c.name]));
+  const catMap = Object.fromEntries(appData.categories.map(c => [String(c.id), c.name]));
   if (appData.habits.length === 0) {
     el.innerHTML = `<div style="grid-column:1/-1; padding:40px; text-align:center; background:var(--surface); border:1px dashed var(--border); border-radius: var(--radius); color:var(--text-3); font-size:13px;">No goals yet. Use "+ Add goal" to create your first.</div>`;
     return;
@@ -1301,7 +1353,7 @@ function renderGoals() {
     else if (pct < 30) { status='risk'; statusLabel='Needs push'; }
     return `
       <div class="goal-card">
-        <div class="cat-tag"><span class="dot" style="background:${hex}"></span>${catMap[h.categoryId] || 'Uncategorized'}</div>
+        <div class="cat-tag"><span class="dot" style="background:${hex}"></span>${catMap[String(h.categoryId)] || 'Uncategorized'}</div>
         <div class="gname">${h.name}</div>
         <div class="gbar-row"><span class="gpct">${pct}%</span><span class="gstatus ${status}">${statusLabel}</span></div>
         <div class="progress-lg"><div style="width:${pct}%; background:${hex}"></div></div>
@@ -1359,7 +1411,7 @@ function renderDashboard() {
 
   const list = document.getElementById('todayList');
   document.getElementById('todayDateLabel').innerText = new Date().toLocaleDateString(undefined, { weekday:'long', month:'short', day:'numeric' });
-  const catMap = Object.fromEntries(appData.categories.map(c => [c.id, c.name]));
+  const catMap = Object.fromEntries(appData.categories.map(c => [String(c.id), c.name]));
   if (appData.habits.length === 0) {
     list.innerHTML = `<div style="font-size:12px; color:var(--text-3); padding: 20px; text-align:center;">Add a goal to see it here.</div>`;
   } else {
@@ -1367,11 +1419,11 @@ function renderDashboard() {
       const done = h.logs && h.logs[today];
       const hex = colorHexMap[h.color] || '#6366f1';
       return `
-        <div class="today-item ${done?'done':''}" onclick="toggleLog(${h.id}, '${today}')">
+        <div class="today-item ${done?'done':''}" onclick="toggleLog('${h.id}', '${today}')">
           <span class="today-check"><svg class="ic" style="width:12px;height:12px; stroke-width:2.5;"><use href="#i-check"/></svg></span>
           <span style="width:8px;height:8px;border-radius:50%;background:${hex}; flex-shrink:0;"></span>
           <span class="today-name">${h.name}</span>
-          <span class="today-cat">${catMap[h.categoryId] || ''}</span>
+          <span class="today-cat">${catMap[String(h.categoryId)] || ''}</span>
         </div>`;
     }).join('');
   }
@@ -1382,18 +1434,18 @@ function renderDashboard() {
 // =============================================================
 async function deleteHabitPrompt(id) {
   if(await openModal("Delete goal?", "All historical data will be lost.", "", "Delete")) {
-    appData.habits = appData.habits.filter(h => h.id !== id); markDataChanged();
+    appData.habits = appData.habits.filter(h => String(h.id) !== String(id)); markDataChanged();
   }
 }
 async function deleteCategoryPrompt(id) {
   if(await openModal("Delete section?", "All goals inside will also be deleted.", "", "Delete all")) {
-    appData.habits = appData.habits.filter(h => h.categoryId !== id);
-    appData.categories = appData.categories.filter(c => c.id !== id);
+    appData.habits = appData.habits.filter(h => String(h.categoryId) !== String(id));
+    appData.categories = appData.categories.filter(c => String(c.id) !== String(id));
     markDataChanged();
   }
 }
 async function editHabit(id) {
-  const h = appData.habits.find(x => x.id === id); if(!h) return;
+  const h = appData.habits.find(x => String(x.id) === String(id)); if(!h) return;
   const inputs = `
     <label style="display:block; font-size:11px; color: var(--text-3); font-weight: 600; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.04em;">Goal name</label>
     <input type="text" id="eName" class="modal-input" value="${h.name}">
@@ -1413,7 +1465,7 @@ function setupDragAndDrop() {
   const cards = document.querySelectorAll('.habit-card');
   const lists = document.querySelectorAll('.habit-list');
   cards.forEach(card => {
-    card.addEventListener('dragstart', () => { draggedHabitId = parseInt(card.dataset.habitId); card.style.opacity = '0.5'; });
+    card.addEventListener('dragstart', () => { draggedHabitId = card.dataset.habitId; card.style.opacity = '0.5'; });
     card.addEventListener('dragend', () => { draggedHabitId = null; card.style.opacity = '1'; lists.forEach(l => l.classList.remove('drag-over')); });
   });
   lists.forEach(list => {
@@ -1421,8 +1473,8 @@ function setupDragAndDrop() {
     list.addEventListener('dragleave', () => list.classList.remove('drag-over'));
     list.addEventListener('drop', e => {
       e.preventDefault(); list.classList.remove('drag-over');
-      const h = appData.habits.find(x => x.id === draggedHabitId);
-      if(h && h.categoryId !== list.dataset.categoryId) { h.categoryId = list.dataset.categoryId; markDataChanged(); }
+      const h = appData.habits.find(x => String(x.id) === String(draggedHabitId));
+      if(h && String(h.categoryId) !== String(list.dataset.categoryId)) { h.categoryId = list.dataset.categoryId; markDataChanged(); }
     });
   });
 }
@@ -1436,7 +1488,7 @@ function updateCharts() {
   const lineCtx = document.getElementById('lineChart');
   if(!barCtx || !ringCtx || !lineCtx) return;
   const catLabels = appData.categories.map(c => c.name);
-  const catData = appData.categories.map(c => appData.habits.filter(h => h.categoryId === c.id).reduce((s,h) => s + (h.logs ? Object.keys(h.logs).length : 0), 0));
+  const catData = appData.categories.map(c => appData.habits.filter(h => String(h.categoryId) === String(c.id)).reduce((s,h) => s + (h.logs ? Object.keys(h.logs).length : 0), 0));
   if(chartsInstance.bar) chartsInstance.bar.destroy();
   if(chartsInstance.ring) chartsInstance.ring.destroy();
   if(chartsInstance.line) chartsInstance.line.destroy();
@@ -1493,7 +1545,7 @@ function renderBMIResult() {
   const bmi = (h>0 && w>0) ? (w/(h*h)) : 0;
   document.getElementById('bmiVal').innerText = bmi.toFixed(1);
   let cat = 'Healthy', catColor = 'var(--success)', catBg = 'var(--success-bg)';
-  if (bmi < 18.5) { cat='Underweight'; catColor='#0ea5e9'; catBg='#e0f2fe'; }
+  if (bmi < 18.5) { cat='Underweight'; catColor='#0ea5e9'; catBg='var(--primary-bg)'; }
   else if (bmi < 25) { cat='Healthy'; catColor='var(--success)'; catBg='var(--success-bg)'; }
   else if (bmi < 30) { cat='Overweight'; catColor='var(--warn)'; catBg='var(--warn-bg)'; }
   else { cat='Obese'; catColor='var(--danger)'; catBg='var(--danger-bg)'; }
@@ -1606,204 +1658,267 @@ async function generateProfessionalPDF() {
   btn.innerHTML = `<svg class="ic"><use href="#i-download"/></svg>Generating…`;
   btn.disabled = true;
 
-  const wasActive = document.querySelector('#primaryTabs .tab-btn.active').dataset.tab;
-  if (wasActive !== 'view-analytics') {
-    switchTab('view-analytics');
-    await new Promise(r => setTimeout(r, 100));
-  }
-  updateCharts();
-  
-  await new Promise(r => setTimeout(r, 1200));
+  try {
+    const wasActive = document.querySelector('#primaryTabs .tab-btn.active').dataset.tab;
+    if (wasActive !== 'view-analytics') {
+      switchTab('view-analytics');
+      await new Promise(r => setTimeout(r, 100));
+    }
+    updateCharts();
+    
+    await new Promise(r => setTimeout(r, 1200));
 
-  const totalComp = appData.habits.reduce((s,h) => s + (h.logs ? Object.keys(h.logs).length : 0), 0);
-  const totalHabits = appData.habits.length;
-  const totalCats = appData.categories.length;
-  let best = null, bestVal = -1;
-  appData.habits.forEach(h => { const c = h.logs ? Object.keys(h.logs).length : 0; if(c>bestVal){bestVal=c; best=h;} });
-  const completedGoals = appData.habits.filter(h => (h.logs?Object.keys(h.logs).length:0) >= h.targetDays).length;
-  let insight = 'Start logging your days to generate insights.';
-  if (totalComp > 0) {
-    insight = `You have logged <strong>${totalComp} total completions</strong> across ${totalHabits} goal${totalHabits!==1?'s':''}. Your strongest area is <strong>“${best.name}”</strong> with ${bestVal} successful days. ${completedGoals>0 ? `You've already completed <strong>${completedGoals}</strong> goal${completedGoals!==1?'s':''}. ` : ''}Maintain this rhythm to compound your progress.`;
-  }
+    const totalComp = appData.habits.reduce((s,h) => s + (h.logs ? Object.keys(h.logs).length : 0), 0);
+    const totalHabits = appData.habits.length;
+    const totalCats = appData.categories.length;
+    
+    // Compute Stats
+    let best = null, bestVal = -1, worst = null, worstVal = Infinity;
+    appData.habits.forEach(h => { 
+        const c = h.logs ? Object.keys(h.logs).length : 0; 
+        const pct = Math.min(100, Math.round((c / (h.targetDays||1)) * 100));
+        if(pct > bestVal){ bestVal = pct; best = h; }
+        if(pct < worstVal){ worstVal = pct; worst = h; }
+    });
+    
+    let bestCat = null, bestCatVal = -1, worstCat = null, worstCatVal = Infinity;
+    appData.categories.forEach(c => {
+        const habits = appData.habits.filter(h => String(h.categoryId) === String(c.id));
+        if(habits.length === 0) return;
+        let sumPct = 0;
+        habits.forEach(h => { sumPct += Math.min(100, Math.round(( (h.logs ? Object.keys(h.logs).length : 0) / (h.targetDays||1) ) * 100)); });
+        const avg = sumPct / habits.length;
+        if(avg > bestCatVal){ bestCatVal = avg; bestCat = c; }
+        if(avg < worstCatVal){ worstCatVal = avg; worstCat = c; }
+    });
 
-  const barUrl = document.getElementById('barChart').toDataURL('image/png', 1.0);
-  const ringUrl = document.getElementById('ringChart').toDataURL('image/png', 1.0);
-  const lineUrl = document.getElementById('lineChart').toDataURL('image/png', 1.0);
+    const completedGoals = appData.habits.filter(h => (h.logs?Object.keys(h.logs).length:0) >= h.targetDays).length;
+    
+    let insight = 'Start logging your days to generate dynamic insights.';
+    if (totalComp > 0 && best) {
+      insight = `You have logged <strong>${totalComp} total completions</strong> across ${totalHabits} goal${totalHabits!==1?'s':''}. Your highest performing goal is <strong>“${best.name}”</strong> at ${bestVal}%. ${worst && worst !== best ? `Focus more attention on <strong>“${worst.name}”</strong> which sits at ${worstVal}%.` : ''} ${bestCat ? `<br><br><strong>Strongest Section:</strong> ${bestCat.name} (${Math.round(bestCatVal)}% avg).<br><strong>Weakest Section:</strong> ${worstCat ? worstCat.name : 'None'} (${worstCat ? Math.round(worstCatVal) : 0}% avg).` : ''}`;
+    }
 
-  const today = new Date();
-  const dateStr = today.toLocaleDateString(undefined, { year:'numeric', month:'long', day:'numeric' });
-  const catMap = Object.fromEntries(appData.categories.map(c => [c.id, c.name]));
+    const barUrl = document.getElementById('barChart').toDataURL('image/png', 1.0);
+    const ringUrl = document.getElementById('ringChart').toDataURL('image/png', 1.0);
+    const lineUrl = document.getElementById('lineChart').toDataURL('image/png', 1.0);
 
-  let html = '';
+    const today = new Date();
+    const dateStr = today.toLocaleDateString(undefined, { year:'numeric', month:'long', day:'numeric' });
+    const catMap = Object.fromEntries(appData.categories.map(c => [String(c.id), c.name]));
 
-  // ===== PAGE 1: COVER =====
-  html += `
-  <div class="pdf-page pdf-cover" style="padding:0;">
-    <div style="padding: 60px 48px; position:relative; box-sizing:border-box; width:100%; height:100%;">
-      <div class="brand">Smart Goals Intelligence Report</div>
-      <h1>Progress report<br/>${today.getFullYear()}</h1>
-      <div class="subtitle">A detailed look at ${appData.userName}'s habit and goal performance.</div>
-      <div class="meta-grid">
-        <div><div class="meta-label">Prepared for</div><div class="meta-val">${appData.userName}</div></div>
-        <div><div class="meta-label">Report date</div><div class="meta-val">${dateStr}</div></div>
-        <div><div class="meta-label">Tracker ID</div><div class="meta-val" style="font-family:'JetBrains Mono',monospace; font-size:14px;">${USER_ID}</div></div>
-        <div><div class="meta-label">Active goals</div><div class="meta-val">${totalHabits} across ${totalCats} sections</div></div>
+    let html = '';
+    let pageNum = 1;
+
+    // PAGE 1: COVER
+    html += `
+    <div class="pdf-page pdf-cover">
+      <div class="pdf-cover-inner">
+        <div class="brand">Smart Goals Intelligence Report</div>
+        <h1>Progress report<br/>${today.getFullYear()}</h1>
+        <div class="subtitle">A detailed look at ${appData.userName}'s habit and goal performance.</div>
+        <div class="meta-grid">
+          <div><div class="meta-label">Prepared for</div><div class="meta-val">${appData.userName}</div></div>
+          <div><div class="meta-label">Report date</div><div class="meta-val">${dateStr}</div></div>
+          <div><div class="meta-label">Tracker ID</div><div class="meta-val" style="font-family:'JetBrains Mono',monospace; font-size:16px;">${USER_ID}</div></div>
+          <div><div class="meta-label">Active goals</div><div class="meta-val">${totalHabits} across ${totalCats} sections</div></div>
+        </div>
+        <div class="footer-mark"><span>Smart Goals · Confidential</span><span>Page ${String(pageNum++).padStart(2,'0')}</span></div>
       </div>
-      <div class="footer-mark"><span>Smart Goals · Confidential</span><span>Page 01</span></div>
-    </div>
-  </div>`;
+    </div>`;
 
-  // ===== PAGE 2: TABLE OF CONTENTS =====
-  html += `
-  <div class="pdf-page">
-    ${pdfPageHeader(2)}
-    <div class="pdf-section-label">Contents</div>
-    <div class="pdf-h1">Table of contents</div>
-    <div class="pdf-toc">
-      <div class="pdf-toc-item"><span class="num">01</span><span class="title">Executive summary</span><span class="page">03</span></div>
-      <div class="pdf-toc-item"><span class="num">02</span><span class="title">Performance analytics</span><span class="page">04</span></div>
-      <div class="pdf-toc-item"><span class="num">03</span><span class="title">Goal breakdown by section</span><span class="page">05</span></div>
-      <div class="pdf-toc-item"><span class="num">04</span><span class="title">Wellness snapshot</span><span class="page">${5 + Math.max(1, Math.ceil(appData.categories.length/2))}</span></div>
-    </div>
-    ${pdfPageFooter()}
-  </div>`;
-
-  // ===== PAGE 3: EXECUTIVE SUMMARY =====
-  html += `
-  <div class="pdf-page">
-    ${pdfPageHeader(3)}
-    <div class="pdf-section-label">01 · Executive summary</div>
-    <div class="pdf-h1">At a glance</div>
-    <div class="pdf-stat-grid">
-      <div class="pdf-stat-card"><div class="lbl">Active goals</div><div class="v">${totalHabits}</div></div>
-      <div class="pdf-stat-card"><div class="lbl">Completions</div><div class="v">${totalComp}</div></div>
-      <div class="pdf-stat-card"><div class="lbl">Goals reached</div><div class="v">${completedGoals}</div></div>
-      <div class="pdf-stat-card"><div class="lbl">Sections</div><div class="v">${totalCats}</div></div>
-    </div>
-    <div class="pdf-insight"><strong>System insight</strong><br/>${insight}</div>
-    <div class="pdf-h2">Category distribution</div>
-    <div class="pdf-chart-box" style="text-align:center;">
-      <img src="${ringUrl}" style="max-width:340px;">
-    </div>
-    ${pdfPageFooter()}
-  </div>`;
-
-  // ===== PAGE 4: ANALYTICS =====
-  html += `
-  <div class="pdf-page">
-    ${pdfPageHeader(4)}
-    <div class="pdf-section-label">02 · Performance analytics</div>
-    <div class="pdf-h1">Visual analytics</div>
-    <div class="pdf-h2">Completions by category</div>
-    <div class="pdf-chart-box"><img src="${barUrl}"></div>
-    <div class="pdf-h2">Completions over time · last 30 days</div>
-    <div class="pdf-chart-box"><img src="${lineUrl}"></div>
-    ${pdfPageFooter()}
-  </div>`;
-
-  // ===== PAGES 5+: PER-CATEGORY BREAKDOWN =====
-  let pageNum = 5;
-  const catChunks = chunkArray(appData.categories.filter(c => appData.habits.some(h => h.categoryId === c.id)), 2);
-  if (catChunks.length === 0) {
+    // PAGE 2: TABLE OF CONTENTS
     html += `
     <div class="pdf-page">
       ${pdfPageHeader(pageNum++)}
-      <div class="pdf-section-label">03 · Goal breakdown</div>
-      <div class="pdf-h1">Goal breakdown</div>
-      <div style="padding:40px; text-align:center; color:#71717a;">No goals logged yet.</div>
+      <div class="pdf-section-label">Contents</div>
+      <div class="pdf-h1">Table of contents</div>
+      <div class="pdf-toc">
+        <div class="pdf-toc-item"><span class="num">01</span><span class="title">Executive summary & Insights</span><span class="page">03</span></div>
+        <div class="pdf-toc-item"><span class="num">02</span><span class="title">Performance analytics</span><span class="page">04</span></div>
+        <div class="pdf-toc-item"><span class="num">03</span><span class="title">Goal breakdown by section</span><span class="page">05</span></div>
+        <div class="pdf-toc-item"><span class="num">04</span><span class="title">Wellness snapshot</span><span class="page">—</span></div>
+        <div class="pdf-toc-item"><span class="num">05</span><span class="title">Final Notes</span><span class="page">—</span></div>
+      </div>
       ${pdfPageFooter()}
     </div>`;
-  } else {
-    catChunks.forEach(chunk => {
-      html += `<div class="pdf-page">${pdfPageHeader(pageNum++)}<div class="pdf-section-label">03 · Goal breakdown</div><div class="pdf-h1">Goal breakdown by section</div>`;
-      chunk.forEach(cat => {
-        const habits = appData.habits.filter(h => h.categoryId === cat.id);
-        html += `<div class="pdf-h2">${cat.name} · ${habits.length} goals</div>`;
+
+    // PAGE 3: EXECUTIVE SUMMARY
+    html += `
+    <div class="pdf-page">
+      ${pdfPageHeader(pageNum++)}
+      <div class="pdf-section-label">01 · Executive summary</div>
+      <div class="pdf-h1">At a glance</div>
+      <div class="pdf-stat-grid">
+        <div class="pdf-stat-card"><div class="lbl">Active goals</div><div class="v">${totalHabits}</div></div>
+        <div class="pdf-stat-card"><div class="lbl">Completions</div><div class="v">${totalComp}</div></div>
+        <div class="pdf-stat-card"><div class="lbl">Goals reached</div><div class="v">${completedGoals}</div></div>
+        <div class="pdf-stat-card"><div class="lbl">Sections</div><div class="v">${totalCats}</div></div>
+      </div>
+      <div class="pdf-insight"><strong>System insight & Trajectory</strong><br/>${insight}</div>
+      <div class="pdf-h2">Category distribution</div>
+      <div class="pdf-chart-box" style="text-align:center;">
+        <img src="${ringUrl}" style="max-width:340px;">
+      </div>
+      ${pdfPageFooter()}
+    </div>`;
+
+    // PAGE 4: ANALYTICS
+    html += `
+    <div class="pdf-page">
+      ${pdfPageHeader(pageNum++)}
+      <div class="pdf-section-label">02 · Performance analytics</div>
+      <div class="pdf-h1">Visual analytics</div>
+      <div class="pdf-h2">Completions by category</div>
+      <div class="pdf-chart-box"><img src="${barUrl}"></div>
+      <div class="pdf-h2">Completions over time · last 30 days</div>
+      <div class="pdf-chart-box"><img src="${lineUrl}"></div>
+      ${pdfPageFooter()}
+    </div>`;
+
+    // PAGES 5+: SAFELY CHUNKED PER-CATEGORY BREAKDOWN
+    // Build a flat list of render instructions (headers + habits) to easily paginate
+    let printItems = [];
+    appData.categories.forEach(cat => {
+        const habits = appData.habits.filter(h => String(h.categoryId) === String(cat.id));
+        if (habits.length === 0) return;
+        printItems.push({ type: 'cat_header', name: cat.name, count: habits.length });
         habits.forEach(h => {
-          const comp = h.logs ? Object.keys(h.logs).length : 0;
-          const pct = Math.min(100, Math.round((comp / h.targetDays) * 100));
-          const hex = colorHexMap[h.color] || '#6366f1';
-          let heatHtml = '<div class="pdf-habit-heatmap">';
-          for(let i=30; i>=0; i--) {
-            const d = new Date(); d.setDate(d.getDate()-i);
-            const dStr = getFormatDate(d);
-            const logged = h.logs && h.logs[dStr];
-            heatHtml += `<div class="pdf-heatcell" style="background:${logged?hex:'#e4e4e7'};"></div>`;
-          }
-          heatHtml += '</div>';
-          let noteHtml = '';
-          if (h.notes && Object.keys(h.notes).length) {
-            const entries = Object.entries(h.notes).slice(0,4).map(([d,n]) => `<div>• <strong>${d}</strong> — ${n}</div>`).join('');
-            noteHtml = `<div class="pdf-notes">${entries}</div>`;
-          }
-          html += `
-            <div class="pdf-habit-card">
-              <div class="pdf-habit-head">
-                <div class="pdf-habit-name"><span class="pdf-habit-dot" style="background:${hex}"></span>${h.name}${comp>=h.targetDays?' · <span style="color:#10b981; font-size:10px; font-weight:700;">GOAL REACHED</span>':''}</div>
-                <div class="pdf-habit-stats"><span>Progress <span class="stat-n">${comp}/${h.targetDays}</span></span><span>Started <span class="stat-n">${h.startDate || '—'}</span></span><span><span class="stat-n">${pct}%</span></span></div>
-              </div>
-              <div class="pdf-habit-bar"><div style="width:${pct}%; background:${hex};"></div></div>
-              ${heatHtml}
-              ${noteHtml}
-            </div>`;
+            printItems.push({ type: 'habit', data: h });
         });
-      });
-      html += pdfPageFooter() + '</div>';
     });
-  }
 
-  // ===== FINAL PAGE: WELLNESS SNAPSHOT =====
-  const h = appData.bmi.height/100, w = appData.bmi.weight;
-  const bmi = (h>0 && w>0) ? (w/(h*h)).toFixed(1) : '—';
-  let bmiCat = '—';
-  const bmiN = parseFloat(bmi);
-  if (!isNaN(bmiN)) {
-    if (bmiN < 18.5) bmiCat = 'Underweight';
-    else if (bmiN < 25) bmiCat = 'Healthy';
-    else if (bmiN < 30) bmiCat = 'Overweight';
-    else bmiCat = 'Obese';
-  }
-  const todayPdf = getFormatDate(new Date());
-  const waterToday = (appData.water.byDay && appData.water.byDay[todayPdf]) || 0;
-  const waterGoal = appData.water.goalMl || 2500;
-  const waterPct = Math.min(100, Math.round((waterToday/waterGoal)*100));
+    if (printItems.length === 0) {
+      html += `
+      <div class="pdf-page">
+        ${pdfPageHeader(pageNum++)}
+        <div class="pdf-section-label">03 · Goal breakdown</div>
+        <div class="pdf-h1">Goal breakdown</div>
+        <div style="padding:40px; text-align:center; color:#71717a;">No goals logged yet.</div>
+        ${pdfPageFooter()}
+      </div>`;
+    } else {
+      let currentPageSlots = 0;
+      let pageHtml = `<div class="pdf-page">${pdfPageHeader(pageNum++)}<div class="pdf-section-label">03 · Goal breakdown</div><div class="pdf-h1">Goal breakdown by section</div>`;
+      
+      for(let i=0; i<printItems.length; i++) {
+          const item = printItems[i];
+          
+          // Max ~5 slots per page (headers take 1, habits take 1)
+          if (currentPageSlots >= 5) {
+              pageHtml += pdfPageFooter() + '</div>';
+              html += pageHtml;
+              pageHtml = `<div class="pdf-page">${pdfPageHeader(pageNum++)}<div class="pdf-section-label">03 · Goal breakdown (cont.)</div>`;
+              currentPageSlots = 0;
+          }
 
-  html += `
-  <div class="pdf-page">
-    ${pdfPageHeader(pageNum++)}
-    <div class="pdf-section-label">04 · Wellness snapshot</div>
-    <div class="pdf-h1">Wellness snapshot</div>
-    <div class="pdf-stat-grid" style="grid-template-columns: 1fr 1fr;">
-      <div class="pdf-stat-card"><div class="lbl">BMI</div><div class="v">${bmi}</div><div style="font-size:11px; color:#52525b; margin-top:4px; font-weight:600;">${bmiCat}</div></div>
-      <div class="pdf-stat-card"><div class="lbl">Hydration today</div><div class="v">${waterPct}%</div><div style="font-size:11px; color:#52525b; margin-top:4px; font-weight:600;">${waterToday} / ${waterGoal} ml</div></div>
-    </div>
-    <div class="pdf-h2">Profile</div>
-    <div style="display:grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; margin-bottom: 16px;">
-      <div class="pdf-stat-card"><div class="lbl">Height</div><div class="v" style="font-size:16px">${appData.bmi.height} cm</div></div>
-      <div class="pdf-stat-card"><div class="lbl">Weight</div><div class="v" style="font-size:16px">${appData.bmi.weight} kg</div></div>
-      <div class="pdf-stat-card"><div class="lbl">Age</div><div class="v" style="font-size:16px">${appData.bmi.age}</div></div>
-      <div class="pdf-stat-card"><div class="lbl">Activity</div><div class="v" style="font-size:14px; text-transform: capitalize;">${ {low:'Sedentary', mod:'Moderate', high:'Active'}[appData.water.activity] }</div></div>
-    </div>
-    <div class="pdf-insight" style="background:#ecfdf5; border-left-color:#10b981;"><strong>Recommendation</strong><br/>Target <strong>${waterGoal} ml</strong> water/day based on weight, activity (${appData.water.activity}) and climate (${appData.water.climate}). Your current BMI category is <strong>${bmiCat}</strong> — see the in-app wellness tab for diet and exercise guidance.</div>
-    ${pdfPageFooter()}
-  </div>`;
+          if (item.type === 'cat_header') {
+              pageHtml += `<div class="pdf-h2" style="margin-top: ${currentPageSlots===0?'10px':'24px'}">${item.name} · ${item.count} goals</div>`;
+              currentPageSlots += 0.8;
+          } else {
+              const h = item.data;
+              const comp = h.logs ? Object.keys(h.logs).length : 0;
+              const pct = Math.min(100, Math.round((comp / (h.targetDays||1)) * 100));
+              const hex = colorHexMap[h.color] || '#6366f1';
+              
+              let heatHtml = '<div class="pdf-habit-heatmap">';
+              for(let j=30; j>=0; j--) {
+                const d = new Date(); d.setDate(d.getDate()-j);
+                const dStr = getFormatDate(d);
+                const logged = h.logs && h.logs[dStr];
+                heatHtml += `<div class="pdf-heatcell" style="background:${logged?hex:'#e4e4e7'};"></div>`;
+              }
+              heatHtml += '</div>';
+              
+              let noteHtml = '';
+              if (h.notes && Object.keys(h.notes).length) {
+                const entries = Object.entries(h.notes).slice(0,4).map(([d,n]) => `<div>• <strong>${d}</strong> — ${n}</div>`).join('');
+                noteHtml = `<div class="pdf-notes">${entries}</div>`;
+                currentPageSlots += 0.5; // Notes take extra space
+              }
 
-  const template = document.getElementById('hiddenPdfTemplate');
-  template.style.display = 'block';
-  template.innerHTML = html;
+              pageHtml += `
+                <div class="pdf-habit-card">
+                  <div class="pdf-habit-head">
+                    <div class="pdf-habit-name"><span class="pdf-habit-dot" style="background:${hex}"></span>${h.name}${comp>=(h.targetDays||1)?' · <span style="color:#10b981; font-size:11px; font-weight:700;">GOAL REACHED</span>':''}</div>
+                    <div class="pdf-habit-stats"><span>Progress <span class="stat-n">${comp}/${h.targetDays||1}</span></span><span>Started <span class="stat-n">${h.startDate || '—'}</span></span><span><span class="stat-n">${pct}%</span></span></div>
+                  </div>
+                  <div class="pdf-habit-bar"><div style="width:${pct}%; background:${hex};"></div></div>
+                  ${heatHtml}
+                  ${noteHtml}
+                </div>`;
+              currentPageSlots += 1;
+          }
+      }
+      pageHtml += pdfPageFooter() + '</div>';
+      html += pageHtml;
+    }
 
-  const opt = {
-    margin: 0,
-    filename: `SmartGoals_${(appData.userName||'report').replace(/\s+/g,'_')}.pdf`,
-    image: { type:'jpeg', quality: 1 },
-    html2canvas: { scale: 2, useCORS: true, logging: false },
-    jsPDF: { unit:'px', format: [794, 1122], orientation:'portrait' }
-  };
+    // WELLNESS PAGE
+    const bmiH = appData.bmi.height/100, bmiW = appData.bmi.weight;
+    const bmi = (bmiH>0 && bmiW>0) ? (bmiW/(bmiH*bmiH)).toFixed(1) : '—';
+    let bmiCat = '—';
+    const bmiN = parseFloat(bmi);
+    if (!isNaN(bmiN)) {
+      if (bmiN < 18.5) bmiCat = 'Underweight';
+      else if (bmiN < 25) bmiCat = 'Healthy';
+      else if (bmiN < 30) bmiCat = 'Overweight';
+      else bmiCat = 'Obese';
+    }
+    const todayPdf = getFormatDate(new Date());
+    const waterToday = (appData.water.byDay && appData.water.byDay[todayPdf]) || 0;
+    const waterGoal = appData.water.goalMl || 2500;
+    const waterPct = Math.min(100, Math.round((waterToday/waterGoal)*100));
 
-  try {
+    html += `
+    <div class="pdf-page">
+      ${pdfPageHeader(pageNum++)}
+      <div class="pdf-section-label">04 · Wellness snapshot</div>
+      <div class="pdf-h1">Wellness snapshot</div>
+      <div class="pdf-stat-grid" style="grid-template-columns: 1fr 1fr;">
+        <div class="pdf-stat-card"><div class="lbl">BMI</div><div class="v">${bmi}</div><div style="font-size:12px; color:#52525b; margin-top:4px; font-weight:600;">${bmiCat}</div></div>
+        <div class="pdf-stat-card"><div class="lbl">Hydration today</div><div class="v">${waterPct}%</div><div style="font-size:12px; color:#52525b; margin-top:4px; font-weight:600;">${waterToday} / ${waterGoal} ml</div></div>
+      </div>
+      <div class="pdf-h2">Profile</div>
+      <div style="display:grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; margin-bottom: 24px;">
+        <div class="pdf-stat-card"><div class="lbl">Height</div><div class="v" style="font-size:18px">${appData.bmi.height} cm</div></div>
+        <div class="pdf-stat-card"><div class="lbl">Weight</div><div class="v" style="font-size:18px">${appData.bmi.weight} kg</div></div>
+        <div class="pdf-stat-card"><div class="lbl">Age</div><div class="v" style="font-size:18px">${appData.bmi.age}</div></div>
+        <div class="pdf-stat-card"><div class="lbl">Activity</div><div class="v" style="font-size:15px; text-transform: capitalize;">${ {low:'Sedentary', mod:'Moderate', high:'Active'}[appData.water.activity] }</div></div>
+      </div>
+      <div class="pdf-insight" style="background:#ecfdf5; border-left-color:#10b981;"><strong>Recommendation</strong><br/>Target <strong>${waterGoal} ml</strong> water/day based on weight, activity (${appData.water.activity}) and climate (${appData.water.climate}). Your current BMI category is <strong>${bmiCat}</strong> — see the in-app wellness tab for specific diet and exercise guidance.</div>
+      ${pdfPageFooter()}
+    </div>`;
+
+    // FINAL WISHES PAGE
+    html += `
+    <div class="pdf-page" style="display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; height:1122px; padding: 0 100px;">
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:30px;"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      <div style="font-size:36px; font-weight:800; color:#09090b; letter-spacing:-0.03em; margin-bottom:20px;">Keep up the great work, ${appData.userName.split(' ')[0]}!</div>
+      <div style="font-size:18px; color:#52525b; line-height:1.6;">Consistency is the invisible bridge between your current reality and your future goals. Every small step you take today compounds into massive results tomorrow.<br><br>Stay focused, stay disciplined, and keep reaching your targets.</div>
+      <div style="margin-top:50px; font-size:13px; font-weight:600; color:#a1a1aa; letter-spacing:0.1em; text-transform:uppercase;">— The Smart Goals System</div>
+    </div>`;
+
+    const template = document.getElementById('hiddenPdfTemplate');
+    template.style.display = 'block';
+    template.innerHTML = html;
+
+    const opt = {
+      margin: 0,
+      filename: `SmartGoals_${(appData.userName||'report').replace(/\s+/g,'_')}.pdf`,
+      image: { type:'jpeg', quality: 1 },
+      html2canvas: { scale: 2, useCORS: true, logging: false },
+      jsPDF: { unit:'px', format: [794, 1122], orientation:'portrait' }
+    };
+
     await html2pdf().set(opt).from(template).save();
+    
+    template.style.display = 'none'; 
+    template.innerHTML = '';
+  } catch(e) {
+    console.error(e);
+    alert("There was an issue generating the PDF. Please try again.");
   } finally {
-    template.style.display = 'none'; template.innerHTML = '';
     btn.innerHTML = originalLabel; btn.disabled = false;
   }
 }
@@ -1818,7 +1933,6 @@ function pdfPageHeader(n) {
 function pdfPageFooter() {
   return `<div class="pdf-footer"><span>${appData.userName} · ID-${USER_ID}</span><span>Generated ${new Date().toLocaleDateString()}</span></div>`;
 }
-function chunkArray(arr, size) { const out = []; for(let i=0;i<arr.length;i+=size) out.push(arr.slice(i, i+size)); return out; }
 </script>
 </body>
 </html>
