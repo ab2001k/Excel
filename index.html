@@ -363,7 +363,9 @@ body { padding: 24px; overflow-x: hidden; letter-spacing: -0.005em; }
 
 .bmi-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
 .field label { display: block; font-size: 11px; color: var(--text-3); font-weight: 600; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
-.field input, .field select { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: var(--radius-xs); background: var(--surface); font-size: 13px; color: var(--text); outline: none; }
+
+/* FIXED: Ensuring select and inputs use the surface styling correctly in dark mode */
+.field input, .field select { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: var(--radius-xs); background: var(--surface); color: var(--text); font-size: 13px; outline: none; transition: .2s; }
 .field input:focus, .field select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-bg); }
 
 .bmi-result { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px; display: flex; justify-content: space-between; align-items: center; }
@@ -374,11 +376,11 @@ body { padding: 24px; overflow-x: hidden; letter-spacing: -0.005em; }
 .bmi-labels { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-3); font-weight: 500; }
 
 .suggestions { margin-top: 14px; display: flex; flex-direction: column; gap: 8px; }
-.sugg-item { padding: 10px; border-radius: var(--radius-xs); border: 1px solid var(--border); background: var(--surface-2); display: flex; gap: 10px; }
+.sugg-item { padding: 10px; border-radius: var(--radius-xs); border: 1px solid var(--border); background: var(--surface-2); display: flex; gap: 10px; color: var(--text); }
 .sugg-icon { width: 28px; height: 28px; border-radius: var(--radius-xs); background: var(--primary-bg); color: var(--primary-ink); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .sugg-body { flex: 1; }
 .sugg-label { font-size: 11px; color: var(--text-3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
-.sugg-text { font-size: 13px; color: var(--text); margin-top: 2px; }
+.sugg-text { font-size: 13px; margin-top: 2px; }
 
 /* Water */
 .water-target-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
@@ -718,12 +720,12 @@ body { padding: 24px; overflow-x: hidden; letter-spacing: -0.005em; }
           <div class="water-target-row">
             <div class="water-target">Goal today <span class="num" id="waterGoalMl">2500</span> ml</div>
             <div style="display:flex; gap:6px; align-items:center;">
-              <select id="waterActivity" class="field" style="padding:4px 8px; font-size:11px; border:1px solid var(--border); border-radius:6px;" onchange="recalcWaterGoal()">
+              <select id="waterActivity" class="field" onchange="recalcWaterGoal()" style="padding:4px 8px; font-size:11px; border:1px solid var(--border); border-radius:6px;">
                 <option value="low">Sedentary</option>
                 <option value="mod" selected>Moderate</option>
                 <option value="high">Active</option>
               </select>
-              <select id="waterClimate" class="field" style="padding:4px 8px; font-size:11px; border:1px solid var(--border); border-radius:6px;" onchange="recalcWaterGoal()">
+              <select id="waterClimate" class="field" onchange="recalcWaterGoal()" style="padding:4px 8px; font-size:11px; border:1px solid var(--border); border-radius:6px;">
                 <option value="temperate" selected>Temperate</option>
                 <option value="hot">Hot/dry</option>
                 <option value="cold">Cold</option>
@@ -1044,7 +1046,7 @@ function setAvatar(avId) {
 }
 
 // =============================================================
-// Modal
+// Modal (Fixed Resolution Issue)
 // =============================================================
 function openModal(title, desc, inputsHtml, confirmText) {
   return new Promise((resolve) => {
@@ -1055,17 +1057,29 @@ function openModal(title, desc, inputsHtml, confirmText) {
     btn.innerText = confirmText;
     const newBtn = btn.cloneNode(true);
     btn.parentNode.replaceChild(newBtn, btn);
-    newBtn.addEventListener('click', () => { closeModal(); resolve(true); });
+    
+    newBtn.addEventListener('click', () => { 
+        document.getElementById('appModal').classList.remove('active');
+        if (activeModalResolver) {
+            const res = activeModalResolver;
+            activeModalResolver = null;
+            res(true); 
+        }
+    });
+    
     activeModalResolver = resolve;
     document.getElementById('appModal').classList.add('active');
     const firstInput = document.querySelector('#modalInputs .modal-input');
     if(firstInput) setTimeout(() => firstInput.focus(), 80);
   });
 }
+
 function closeModal() {
   document.getElementById('appModal').classList.remove('active');
-  if(activeModalResolver) activeModalResolver(false);
-  activeModalResolver = null;
+  if(activeModalResolver) {
+      activeModalResolver(false);
+      activeModalResolver = null;
+  }
 }
 
 async function addCategoryPrompt() {
@@ -1659,6 +1673,7 @@ async function generateProfessionalPDF() {
   btn.disabled = true;
 
   try {
+    // Dynamically retrieve the absolute latest state of the app
     const wasActive = document.querySelector('#primaryTabs .tab-btn.active').dataset.tab;
     if (wasActive !== 'view-analytics') {
       switchTab('view-analytics');
@@ -1777,7 +1792,7 @@ async function generateProfessionalPDF() {
     </div>`;
 
     // PAGES 5+: SAFELY CHUNKED PER-CATEGORY BREAKDOWN
-    // Build a flat list of render instructions (headers + habits) to easily paginate
+    // Build a flat list of render instructions (headers + habits) to easily paginate dynamically
     let printItems = [];
     appData.categories.forEach(cat => {
         const habits = appData.habits.filter(h => String(h.categoryId) === String(cat.id));
@@ -1895,7 +1910,14 @@ async function generateProfessionalPDF() {
     <div class="pdf-page" style="display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; height:1122px; padding: 0 100px;">
       <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:30px;"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
       <div style="font-size:36px; font-weight:800; color:#09090b; letter-spacing:-0.03em; margin-bottom:20px;">Keep up the great work, ${appData.userName.split(' ')[0]}!</div>
-      <div style="font-size:18px; color:#52525b; line-height:1.6;">Consistency is the invisible bridge between your current reality and your future goals. Every small step you take today compounds into massive results tomorrow.<br><br>Stay focused, stay disciplined, and keep reaching your targets.</div>
+      <div style="font-size:18px; color:#52525b; line-height:1.6; margin-bottom:40px;">Consistency is the invisible bridge between your current reality and your future goals. Every small step you take today compounds into massive results tomorrow.<br><br>Stay focused, stay disciplined, and keep reaching your targets.</div>
+      
+      <div style="background: #eef2ff; border: 1px solid #c7d2fe; padding: 20px 30px; border-radius: 12px; width: 100%; box-sizing: border-box;">
+        <div style="font-size: 14px; font-weight: 700; color: #4338ca; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.1em;">External Resources</div>
+        <div style="font-size: 16px; color: #09090b; margin-bottom: 12px;">Access your detailed spreadsheets directly at:</div>
+        <div style="font-size: 18px; font-weight: 700; color: #6366f1; text-decoration: none; word-break: break-all;">https://ab2001k.github.io/Excel/</div>
+      </div>
+
       <div style="margin-top:50px; font-size:13px; font-weight:600; color:#a1a1aa; letter-spacing:0.1em; text-transform:uppercase;">— The Smart Goals System</div>
     </div>`;
 
