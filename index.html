@@ -43,23 +43,34 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, -apple-system, sans-serif; -webkit-user-drag: none; }
-input, textarea, select, button { font-family: inherit; }
 
-html, body { background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; transition: background-color .3s, color .3s; }
-body { padding: 24px; overflow-x: hidden; letter-spacing: -0.005em; }
+/* 1) BLOCK TEXT SELECTION EXPLICITLY */
+body { 
+  background: var(--bg); color: var(--text); 
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; 
+  text-rendering: optimizeLegibility; transition: background-color .3s, color .3s; 
+  padding: 24px; overflow-x: hidden; letter-spacing: -0.005em;
+  user-select: none; -webkit-user-select: none;
+}
+/* Re-enable selection only on interactive typing elements */
+input, textarea, select { 
+  font-family: inherit; 
+  user-select: auto; -webkit-user-select: auto; 
+}
+button { font-family: inherit; }
 
 .dashboard { max-width: 1240px; margin: 0 auto; }
 
 /* ===== Backup Banner ===== */
 .backup-banner {
   display: none; justify-content: space-between; align-items: center;
-  background: var(--primary-bg); border: 1px solid var(--primary-light);
-  color: var(--primary-ink); padding: 10px 16px; border-radius: var(--radius-sm);
-  margin-bottom: 20px; font-size: 13px; font-weight: 500; animation: fadeIn .3s;
+  background: var(--warn-bg); border: 1px solid var(--warn);
+  color: var(--warn); padding: 10px 16px; border-radius: var(--radius-sm);
+  margin-bottom: 20px; font-size: 13px; font-weight: 600; animation: fadeIn .3s;
 }
-.backup-banner button { background: var(--primary); color: white; border: none; padding: 6px 12px; border-radius: var(--radius-xs); cursor: pointer; font-weight: 600; font-size: 12px; transition: .2s; }
+.backup-banner button { background: var(--warn); color: white; border: none; padding: 6px 12px; border-radius: var(--radius-xs); cursor: pointer; font-weight: 600; font-size: 12px; transition: .2s; }
 .backup-banner button:hover { opacity: .9; }
-.backup-banner .dismiss { background: transparent; color: var(--primary-ink); border: 1px solid currentColor; margin-left: 8px; }
+.backup-banner .dismiss { background: transparent; color: var(--warn); border: 1px solid currentColor; margin-left: 8px; }
 
 /* ===== Icon system ===== */
 .ic { width: 16px; height: 16px; stroke-width: 1.75; stroke: currentColor; fill: none; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; display: inline-block; vertical-align: -3px;}
@@ -74,7 +85,7 @@ body { padding: 24px; overflow-x: hidden; letter-spacing: -0.005em; }
 }
 .logo-area { display: flex; align-items: center; gap: 14px; }
 .logo-icon {
-  background: var(--text); color: var(--surface);
+  background: var(--primary); color: #fff;
   width: 42px; height: 42px; border-radius: var(--radius-sm);
   display: flex; justify-content: center; align-items: center;
   box-shadow: var(--shadow-sm);
@@ -139,7 +150,7 @@ body { padding: 24px; overflow-x: hidden; letter-spacing: -0.005em; }
   display: inline-flex; align-items: center; gap: 6px;
 }
 .tab-btn:hover { color: var(--text); background: var(--bg); }
-.tab-btn.active { background: var(--bg); color: var(--text); font-weight: 600; box-shadow: inset 0 0 0 1px var(--border); }
+.tab-btn.active { background: var(--primary-bg); color: var(--primary-ink); font-weight: 600; box-shadow: inset 0 0 0 1px var(--primary-light); }
 
 .action-row { display: flex; gap: 8px; }
 .btn {
@@ -149,8 +160,8 @@ body { padding: 24px; overflow-x: hidden; letter-spacing: -0.005em; }
   box-shadow: var(--shadow-sm);
 }
 .btn:hover { background: var(--bg); border-color: var(--text-3); }
-.btn-primary { background: var(--text); color: var(--surface); border-color: var(--text); }
-.btn-primary:hover { background: var(--text-2); border-color: var(--text-2); }
+.btn-primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+.btn-primary:hover { background: var(--primary-ink); border-color: var(--primary-ink); }
 .btn-accent { background: var(--primary); color: #fff; border-color: var(--primary); }
 .btn-accent:hover { background: var(--primary-ink); border-color: var(--primary-ink); }
 .btn-ghost { background: transparent; border-color: transparent; box-shadow: none; color: var(--text-2); }
@@ -172,7 +183,7 @@ body { padding: 24px; overflow-x: hidden; letter-spacing: -0.005em; }
   font-size: 12px; font-weight: 500; color: var(--text-2);
   cursor: pointer; border-radius: var(--radius-xs); transition: .2s;
 }
-.subnav-btn.active { background: var(--text); color: var(--surface); font-weight: 600; }
+.subnav-btn.active { background: var(--primary); color: #fff; font-weight: 600; }
 
 .time-controls {
   display: inline-flex; align-items: center; gap: 4px;
@@ -285,8 +296,12 @@ body { padding: 24px; overflow-x: hidden; letter-spacing: -0.005em; }
   border-radius: var(--radius); padding: 18px;
   display: flex; flex-direction: column; gap: 14px;
   transition: .15s; box-shadow: var(--shadow-sm);
+  cursor: grab;
 }
 .weekly-card:hover { border-color: var(--text-3); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.weekly-card:active { cursor: grabbing; }
+.weekly-card.drag-over { border: 1px dashed var(--primary); background: var(--primary-bg); transform: scale(1.02); }
+
 .weekly-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
 .weekly-title { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; letter-spacing: -0.01em; }
 .weekly-cat { font-size: 11px; color: var(--text-3); margin-top: 3px; }
@@ -325,9 +340,9 @@ body { padding: 24px; overflow-x: hidden; letter-spacing: -0.005em; }
 .heat-cell { aspect-ratio: 1; border-radius: 2px; background: var(--border); }
 
 .today-list { display: flex; flex-direction: column; gap: 8px; }
-.today-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: var(--radius-xs); border: 1px solid var(--border); background: var(--surface); transition: .15s; }
+.today-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: var(--radius-xs); border: 1px solid var(--border); background: var(--surface); transition: .15s; cursor: pointer; }
 .today-item:hover { background: var(--bg); }
-.today-check { width: 20px; height: 20px; border-radius: var(--radius-xs); border: 1.5px solid var(--border); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; color: transparent; transition: .15s; }
+.today-check { width: 20px; height: 20px; border-radius: var(--radius-xs); border: 1.5px solid var(--border); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; color: transparent; transition: .15s; }
 .today-item.done .today-check { background: var(--success); border-color: var(--success); color: white; }
 .today-item.done .today-name { color: var(--text-3); text-decoration: line-through; }
 .today-name { font-size: 13px; font-weight: 500; flex: 1; }
@@ -364,7 +379,7 @@ body { padding: 24px; overflow-x: hidden; letter-spacing: -0.005em; }
 .bmi-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
 .field label { display: block; font-size: 11px; color: var(--text-3); font-weight: 600; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
 
-/* FIXED: Ensuring select and inputs use the surface styling correctly in dark mode */
+/* FIX: Ensuring inputs and selects look clean in dark mode */
 .field input, .field select { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: var(--radius-xs); background: var(--surface); color: var(--text); font-size: 13px; outline: none; transition: .2s; }
 .field input:focus, .field select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-bg); }
 
@@ -380,7 +395,7 @@ body { padding: 24px; overflow-x: hidden; letter-spacing: -0.005em; }
 .sugg-icon { width: 28px; height: 28px; border-radius: var(--radius-xs); background: var(--primary-bg); color: var(--primary-ink); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .sugg-body { flex: 1; }
 .sugg-label { font-size: 11px; color: var(--text-3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
-.sugg-text { font-size: 13px; margin-top: 2px; }
+.sugg-text { font-size: 13px; margin-top: 2px; line-height: 1.4; }
 
 /* Water */
 .water-target-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
@@ -408,11 +423,11 @@ body { padding: 24px; overflow-x: hidden; letter-spacing: -0.005em; }
 .chart-container canvas { max-height: 300px; }
 
 /* ===== Modals & ctx menu ===== */
-.custom-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(9,9,11,.4); display: flex; justify-content: center; align-items: center; z-index: 2000; backdrop-filter: blur(4px); opacity: 0; pointer-events: none; transition: .2s; }
+.custom-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(9,9,11,.6); display: flex; justify-content: center; align-items: center; z-index: 2000; backdrop-filter: blur(4px); opacity: 0; pointer-events: none; transition: .2s; }
 .custom-modal-overlay.active { opacity: 1; pointer-events: all; }
 .custom-modal { background: var(--surface); padding: 24px; border-radius: var(--radius); width: 380px; transform: translateY(10px) scale(0.98); transition: .2s; border: 1px solid var(--border); box-shadow: var(--shadow-lg); }
 .custom-modal-overlay.active .custom-modal { transform: translateY(0) scale(1); }
-.modal-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.01em; }
+.modal-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.01em; color: var(--text); }
 .modal-desc { color: var(--text-3); font-size: 12px; margin-bottom: 14px; }
 .modal-input { width: 100%; padding: 9px 12px; border: 1px solid var(--border); background: var(--surface); color: var(--text); border-radius: var(--radius-xs); font-size: 13px; outline: none; margin-bottom: 10px; }
 .modal-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-bg); }
@@ -458,12 +473,12 @@ body { padding: 24px; overflow-x: hidden; letter-spacing: -0.005em; }
 
 /* Page template */
 .pdf-page-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 1px solid #e4e4e7; margin-bottom: 28px; }
-.pdf-page-header .logo-row { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; }
+.pdf-page-header .logo-row { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; color:#09090b; }
 .pdf-page-header .logo-row svg { width: 18px; height: 18px; }
 .pdf-page-num { font-size: 12px; color: #71717a; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; }
 
-.pdf-h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 6px; }
-.pdf-h2 { font-size: 18px; font-weight: 700; letter-spacing: -0.01em; margin: 24px 0 14px; padding-bottom: 8px; border-bottom: 1px solid #e4e4e7; }
+.pdf-h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 6px; color:#09090b; }
+.pdf-h2 { font-size: 18px; font-weight: 700; letter-spacing: -0.01em; margin: 24px 0 14px; padding-bottom: 8px; border-bottom: 1px solid #e4e4e7; color:#09090b; }
 .pdf-section-label { font-size: 12px; font-weight: 600; color: #71717a; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 8px; }
 
 /* Table of Contents */
@@ -477,7 +492,7 @@ body { padding: 24px; overflow-x: hidden; letter-spacing: -0.005em; }
 .pdf-stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 20px 0 28px; }
 .pdf-stat-card { background: #fafafa; border: 1px solid #e4e4e7; border-radius: 8px; padding: 18px; }
 .pdf-stat-card .lbl { font-size: 11px; color: #71717a; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
-.pdf-stat-card .v { font-size: 26px; font-weight: 800; margin-top: 8px; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.pdf-stat-card .v { font-size: 26px; font-weight: 800; margin-top: 8px; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; color:#09090b; }
 
 .pdf-insight { background: #eef2ff; border-left: 4px solid #6366f1; padding: 18px 20px; border-radius: 0 8px 8px 0; margin-bottom: 24px; font-size: 14px; line-height: 1.6; color: #09090b; }
 .pdf-insight strong { color: #4338ca; }
@@ -485,7 +500,7 @@ body { padding: 24px; overflow-x: hidden; letter-spacing: -0.005em; }
 /* Per-habit rows */
 .pdf-habit-card { background: #fafafa; border: 1px solid #e4e4e7; border-radius: 8px; padding: 16px 18px; margin-bottom: 14px; page-break-inside: avoid; }
 .pdf-habit-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-.pdf-habit-name { font-weight: 700; font-size: 15px; display: flex; align-items: center; gap: 10px; }
+.pdf-habit-name { font-weight: 700; font-size: 15px; display: flex; align-items: center; gap: 10px; color:#09090b; }
 .pdf-habit-dot { width: 12px; height: 12px; border-radius: 3px; }
 .pdf-habit-stats { font-size: 12px; color: #52525b; font-variant-numeric: tabular-nums; display: flex; gap: 14px; }
 .pdf-habit-stats .stat-n { color: #09090b; font-weight: 700; }
@@ -841,10 +856,10 @@ function initializeLocalApp() {
     
     loadLocalData(); 
     
-    // Check backup timing
+    // Check backup timing (every 3 days recommend backup)
     const lastBackup = localStorage.getItem('sg_last_backup') || 0;
     const daysSinceBackup = (Date.now() - lastBackup) / (1000 * 3600 * 24);
-    if (daysSinceBackup > 7) {
+    if (daysSinceBackup > 3) {
         document.getElementById('backupReminder').style.display = 'flex';
     }
     
@@ -926,7 +941,6 @@ function importBackup(e) {
       const parsed = JSON.parse(ev.target.result);
       if(parsed && parsed.categories && parsed.habits) {
         appData = parsed;
-        // Stringify IDs
         appData.categories.forEach(c => c.id = String(c.id));
         appData.habits.forEach(h => h.id = String(h.id));
         markDataChanged();
@@ -942,7 +956,7 @@ function importBackup(e) {
 
 function dismissBackupBanner() {
     document.getElementById('backupReminder').style.display = 'none';
-    localStorage.setItem('sg_last_backup', Date.now()); // Fake a recent backup to snooze
+    localStorage.setItem('sg_last_backup', Date.now());
 }
 
 /* ===== Theme & Dark Mode ===== */
@@ -971,6 +985,7 @@ function setTheme(themeName) {
   appData.theme = themeName;
   applyThemeColors();
   markDataChanged(false);
+  if(document.getElementById('view-analytics').classList.contains('active')) updateCharts();
 }
 
 function applyThemeColors() {
@@ -1046,29 +1061,32 @@ function setAvatar(avId) {
 }
 
 // =============================================================
-// Modal (Fixed Resolution Issue)
+// Modal (Fixed Root Bug for Promises)
 // =============================================================
 function openModal(title, desc, inputsHtml, confirmText) {
   return new Promise((resolve) => {
     document.getElementById('modalTitle').innerText = title;
     document.getElementById('modalDesc').innerText = desc;
     document.getElementById('modalInputs').innerHTML = inputsHtml;
+    
     const btn = document.getElementById('modalConfirmBtn');
     btn.innerText = confirmText;
+    
+    // Clear old listeners by replacing node
     const newBtn = btn.cloneNode(true);
     btn.parentNode.replaceChild(newBtn, btn);
     
+    // Only resolve true if confirm clicked
     newBtn.addEventListener('click', () => { 
         document.getElementById('appModal').classList.remove('active');
-        if (activeModalResolver) {
-            const res = activeModalResolver;
-            activeModalResolver = null;
-            res(true); 
-        }
+        const res = activeModalResolver;
+        activeModalResolver = null;
+        if(res) res(true); 
     });
     
     activeModalResolver = resolve;
     document.getElementById('appModal').classList.add('active');
+    
     const firstInput = document.querySelector('#modalInputs .modal-input');
     if(firstInput) setTimeout(() => firstInput.focus(), 80);
   });
@@ -1084,7 +1102,8 @@ function closeModal() {
 
 async function addCategoryPrompt() {
   const inputs = `<input type="text" id="catName" class="modal-input" placeholder="e.g. Self improvement">`;
-  if(await openModal("New section", "Create a new category to group your goals.", inputs, "Create")) {
+  const confirmed = await openModal("New section", "Create a new category to group your goals.", inputs, "Create");
+  if(confirmed) {
     const val = document.getElementById('catName').value.trim();
     if(val) { 
         appData.categories.push({ id: 'c_' + Date.now().toString(36) + Math.random().toString(36).substr(2, 5), name:val }); 
@@ -1100,7 +1119,8 @@ async function addHabitPrompt() {
     <input type="text" id="hName" class="modal-input" placeholder="Goal name">
     <input type="number" id="hTarget" class="modal-input" placeholder="Target days" value="30">
     <select id="hCat" class="modal-input">${catOptions}</select>`;
-  if(await openModal("Add goal", "Define your habit target.", inputs, "Add")) {
+  const confirmed = await openModal("Add goal", "Define your habit target.", inputs, "Add");
+  if(confirmed) {
     const name = document.getElementById('hName').value.trim();
     const target = parseInt(document.getElementById('hTarget').value) || 30;
     if(name) {
@@ -1133,17 +1153,22 @@ async function ctxAction(action) {
   const h = appData.habits.find(x => String(x.id) === ctxTarget.habitId);
   if(!h) return;
   if(!h.notes) h.notes = {};
-  if(action === 'start') { h.startDate = ctxTarget.dateStr; }
-  else if (action === 'clear') { if(h.logs) delete h.logs[ctxTarget.dateStr]; if(h.notes) delete h.notes[ctxTarget.dateStr]; }
+  if(action === 'start') { h.startDate = ctxTarget.dateStr; markDataChanged(); }
+  else if (action === 'clear') { 
+      if(h.logs) delete h.logs[ctxTarget.dateStr]; 
+      if(h.notes) delete h.notes[ctxTarget.dateStr]; 
+      markDataChanged();
+  }
   else if (action === 'note') {
     const existing = (h.notes[ctxTarget.dateStr] || '').replace(/"/g,'&quot;');
     const inputs = `<input type="text" id="noteInput" class="modal-input" value="${existing}" placeholder="Reason or details…">`;
-    if(await openModal("Add note", `Entry for ${ctxTarget.dateStr}`, inputs, "Save note")) {
+    const confirmed = await openModal("Add note", `Entry for ${ctxTarget.dateStr}`, inputs, "Save note");
+    if(confirmed) {
       const val = document.getElementById('noteInput').value.trim();
       if(val) h.notes[ctxTarget.dateStr] = val; else delete h.notes[ctxTarget.dateStr];
+      markDataChanged();
     }
   }
-  markDataChanged();
 }
 
 // =============================================================
@@ -1321,7 +1346,7 @@ function renderWeeklyCards() {
       </div>`;
     }).join('');
     return `
-      <div class="weekly-card">
+      <div class="weekly-card" draggable="true" data-habit-id="${h.id}">
         <div class="weekly-head">
           <div>
             <div class="weekly-title"><span class="habit-dot" style="background:${hex}"></span>${h.name}</div>
@@ -1447,12 +1472,14 @@ function renderDashboard() {
 // Edit / delete
 // =============================================================
 async function deleteHabitPrompt(id) {
-  if(await openModal("Delete goal?", "All historical data will be lost.", "", "Delete")) {
+  const confirmed = await openModal("Delete goal?", "All historical data will be lost.", "", "Delete");
+  if(confirmed) {
     appData.habits = appData.habits.filter(h => String(h.id) !== String(id)); markDataChanged();
   }
 }
 async function deleteCategoryPrompt(id) {
-  if(await openModal("Delete section?", "All goals inside will also be deleted.", "", "Delete all")) {
+  const confirmed = await openModal("Delete section?", "All goals inside will also be deleted.", "", "Delete all");
+  if(confirmed) {
     appData.habits = appData.habits.filter(h => String(h.categoryId) !== String(id));
     appData.categories = appData.categories.filter(c => String(c.id) !== String(id));
     markDataChanged();
@@ -1465,7 +1492,8 @@ async function editHabit(id) {
     <input type="text" id="eName" class="modal-input" value="${h.name}">
     <label style="display:block; font-size:11px; color: var(--text-3); font-weight: 600; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.04em;">Target days</label>
     <input type="number" id="eTarget" class="modal-input" value="${h.targetDays}">`;
-  if(await openModal("Edit goal", "Update settings.", inputs, "Save")) {
+  const confirmed = await openModal("Edit goal", "Update settings.", inputs, "Save");
+  if(confirmed) {
     h.name = document.getElementById('eName').value.trim() || h.name;
     h.targetDays = parseInt(document.getElementById('eTarget').value) || h.targetDays;
     markDataChanged();
@@ -1476,10 +1504,11 @@ async function editHabit(id) {
 // Drag and drop
 // =============================================================
 function setupDragAndDrop() {
+  // Monthly View Cards
   const cards = document.querySelectorAll('.habit-card');
   const lists = document.querySelectorAll('.habit-list');
   cards.forEach(card => {
-    card.addEventListener('dragstart', () => { draggedHabitId = card.dataset.habitId; card.style.opacity = '0.5'; });
+    card.addEventListener('dragstart', (e) => { draggedHabitId = card.dataset.habitId; card.style.opacity = '0.5'; e.stopPropagation(); });
     card.addEventListener('dragend', () => { draggedHabitId = null; card.style.opacity = '1'; lists.forEach(l => l.classList.remove('drag-over')); });
   });
   lists.forEach(list => {
@@ -1491,35 +1520,78 @@ function setupDragAndDrop() {
       if(h && String(h.categoryId) !== String(list.dataset.categoryId)) { h.categoryId = list.dataset.categoryId; markDataChanged(); }
     });
   });
+
+  // Weekly Focus Cards (Reorder Goals Global Array)
+  const weekCards = document.querySelectorAll('.weekly-card');
+  weekCards.forEach(card => {
+     card.addEventListener('dragstart', (e) => {
+         draggedHabitId = card.dataset.habitId;
+         card.style.opacity = '0.5';
+         e.stopPropagation();
+     });
+     card.addEventListener('dragend', () => {
+         draggedHabitId = null;
+         card.style.opacity = '1';
+         weekCards.forEach(c => c.classList.remove('drag-over'));
+     });
+     card.addEventListener('dragover', e => { e.preventDefault(); card.classList.add('drag-over'); });
+     card.addEventListener('dragleave', () => { card.classList.remove('drag-over'); });
+     card.addEventListener('drop', e => {
+         e.preventDefault();
+         card.classList.remove('drag-over');
+         if(draggedHabitId && draggedHabitId !== card.dataset.habitId) {
+             const fromIdx = appData.habits.findIndex(h => String(h.id) === String(draggedHabitId));
+             const toIdx = appData.habits.findIndex(h => String(h.id) === String(card.dataset.habitId));
+             if(fromIdx > -1 && toIdx > -1) {
+                 const [moved] = appData.habits.splice(fromIdx, 1);
+                 appData.habits.splice(toIdx, 0, moved);
+                 markDataChanged();
+             }
+         }
+     });
+  });
 }
 
 // =============================================================
-// Analytics charts
+// Analytics charts (Now Maps Exact Habit Colors Dynamically)
 // =============================================================
 function updateCharts() {
   const barCtx = document.getElementById('barChart');
   const ringCtx = document.getElementById('ringChart');
   const lineCtx = document.getElementById('lineChart');
   if(!barCtx || !ringCtx || !lineCtx) return;
-  const catLabels = appData.categories.map(c => c.name);
-  const catData = appData.categories.map(c => appData.habits.filter(h => String(h.categoryId) === String(c.id)).reduce((s,h) => s + (h.logs ? Object.keys(h.logs).length : 0), 0));
+  
   if(chartsInstance.bar) chartsInstance.bar.destroy();
   if(chartsInstance.ring) chartsInstance.ring.destroy();
   if(chartsInstance.line) chartsInstance.line.destroy();
+  
   const themeColor = themes[appData.theme] ? themes[appData.theme].primary : '#6366f1';
   
-  const barColors = ['#6366f1','#10b981','#f59e0b','#ec4899','#8b5cf6','#0ea5e9','#f43f5e','#84cc16'];
+  // Bar Chart mapping: Average or first color from habits in category
+  const catLabels = appData.categories.map(c => c.name);
+  const catData = appData.categories.map(c => appData.habits.filter(h => String(h.categoryId) === String(c.id)).reduce((s,h) => s + (h.logs ? Object.keys(h.logs).length : 0), 0));
+  const barColors = appData.categories.map(c => {
+      const h = appData.habits.find(x => String(x.categoryId) === String(c.id));
+      return h ? (colorHexMap[h.color] || themeColor) : themeColor;
+  });
 
   chartsInstance.bar = new Chart(barCtx, {
     type:'bar',
-    data:{ labels:catLabels, datasets:[{ label:'Completions', data:catData, backgroundColor: barColors.slice(0, catData.length), borderRadius:6, maxBarThickness:48 }] },
+    data:{ labels:catLabels, datasets:[{ label:'Completions', data:catData, backgroundColor: barColors, borderRadius:6, maxBarThickness:48 }] },
     options:{ plugins:{legend:{display:false}}, scales:{ y:{ beginAtZero:true, grid:{color:'#eee'}}, x:{ grid:{display:false}}} }
   });
+
+  // Ring Chart mapping: Direct mapping to each habit
+  const ringLabels = appData.habits.map(h => h.name);
+  const ringData = appData.habits.map(h => h.logs ? Object.keys(h.logs).length : 0);
+  const ringColors = appData.habits.map(h => colorHexMap[h.color] || themeColor);
+
   chartsInstance.ring = new Chart(ringCtx, {
     type:'doughnut',
-    data:{ labels:catLabels, datasets:[{ data:catData, backgroundColor:['#6366f1','#10b981','#f59e0b','#ec4899','#8b5cf6','#0ea5e9','#f43f5e','#84cc16'], borderWidth:0 }] },
+    data:{ labels:ringLabels, datasets:[{ data:ringData, backgroundColor:ringColors, borderWidth:0 }] },
     options:{ cutout:'70%', plugins:{legend:{position:'bottom', labels:{boxWidth:10, padding:10, font:{size:11}}}} }
   });
+
   const labels = []; const totals = [];
   for(let i=29; i>=0; i--) {
     const d = new Date(); d.setDate(d.getDate()-i);
@@ -1752,8 +1824,8 @@ async function generateProfessionalPDF() {
         <div class="pdf-toc-item"><span class="num">01</span><span class="title">Executive summary & Insights</span><span class="page">03</span></div>
         <div class="pdf-toc-item"><span class="num">02</span><span class="title">Performance analytics</span><span class="page">04</span></div>
         <div class="pdf-toc-item"><span class="num">03</span><span class="title">Goal breakdown by section</span><span class="page">05</span></div>
-        <div class="pdf-toc-item"><span class="num">04</span><span class="title">Wellness snapshot</span><span class="page">—</span></div>
-        <div class="pdf-toc-item"><span class="num">05</span><span class="title">Final Notes</span><span class="page">—</span></div>
+        ${(appData.bmi.enabled || appData.water.enabled) ? `<div class="pdf-toc-item"><span class="num">04</span><span class="title">Wellness snapshot</span><span class="page">—</span></div>` : ''}
+        <div class="pdf-toc-item"><span class="num">0${(appData.bmi.enabled || appData.water.enabled) ? '5' : '4'}</span><span class="title">Final Notes</span><span class="page">—</span></div>
       </div>
       ${pdfPageFooter()}
     </div>`;
@@ -1771,7 +1843,7 @@ async function generateProfessionalPDF() {
         <div class="pdf-stat-card"><div class="lbl">Sections</div><div class="v">${totalCats}</div></div>
       </div>
       <div class="pdf-insight"><strong>System insight & Trajectory</strong><br/>${insight}</div>
-      <div class="pdf-h2">Category distribution</div>
+      <div class="pdf-h2">Goal distribution</div>
       <div class="pdf-chart-box" style="text-align:center;">
         <img src="${ringUrl}" style="max-width:340px;">
       </div>
@@ -1869,41 +1941,64 @@ async function generateProfessionalPDF() {
       html += pageHtml;
     }
 
-    // WELLNESS PAGE
-    const bmiH = appData.bmi.height/100, bmiW = appData.bmi.weight;
-    const bmi = (bmiH>0 && bmiW>0) ? (bmiW/(bmiH*bmiH)).toFixed(1) : '—';
-    let bmiCat = '—';
-    const bmiN = parseFloat(bmi);
-    if (!isNaN(bmiN)) {
-      if (bmiN < 18.5) bmiCat = 'Underweight';
-      else if (bmiN < 25) bmiCat = 'Healthy';
-      else if (bmiN < 30) bmiCat = 'Overweight';
-      else bmiCat = 'Obese';
-    }
-    const todayPdf = getFormatDate(new Date());
-    const waterToday = (appData.water.byDay && appData.water.byDay[todayPdf]) || 0;
-    const waterGoal = appData.water.goalMl || 2500;
-    const waterPct = Math.min(100, Math.round((waterToday/waterGoal)*100));
+    // CONDITIONAL WELLNESS PAGE
+    if (appData.bmi.enabled || appData.water.enabled) {
+        html += `<div class="pdf-page">${pdfPageHeader(pageNum++)}<div class="pdf-section-label">04 · Wellness snapshot</div><div class="pdf-h1">Wellness snapshot</div>`;
+        
+        if (appData.bmi.enabled) {
+            const bmiH = appData.bmi.height/100, bmiW = appData.bmi.weight;
+            const bmi = (bmiH>0 && bmiW>0) ? (bmiW/(bmiH*bmiH)).toFixed(1) : '—';
+            let bmiCat = '—';
+            const bmiN = parseFloat(bmi);
+            if (!isNaN(bmiN)) {
+              if (bmiN < 18.5) bmiCat = 'Underweight';
+              else if (bmiN < 25) bmiCat = 'Healthy';
+              else if (bmiN < 30) bmiCat = 'Overweight';
+              else bmiCat = 'Obese';
+            }
+            
+            let suggestionStr = '';
+            if (bmiCat === 'Underweight') {
+                suggestionStr = `Your BMI falls into the <strong>Underweight</strong> category. Try adding a ~300–500 kcal surplus daily focusing on whole grains, nuts, and lean proteins. Incorporate resistance training 3×/week to build mass and prioritise 7–9 hrs of sleep.`;
+            } else if (bmiCat === 'Healthy') {
+                suggestionStr = `Your BMI is <strong>Healthy</strong>! Maintain your routine with balanced meals (0.8–1.2 g protein/kg) and aim for 150 min moderate activity per week. Remember to prioritise consistent sleep.`;
+            } else if (bmiCat === 'Overweight') {
+                suggestionStr = `Your BMI falls into the <strong>Overweight</strong> category. A ~300–500 kcal deficit can help steady progress. Mix strength (2–3×/wk) and cardio, aiming for 8–10k steps daily while ensuring adequate sleep.`;
+            } else if (bmiCat === 'Obese') {
+                suggestionStr = `Your BMI falls into the <strong>Obese</strong> category. Focus on low-impact cardio (walking, swimming) and a sustainable diet structure. Address sleep quality and stress levels as they strongly influence weight loss.`;
+            }
+            
+            html += `
+            <div class="pdf-h2" style="margin-top:10px;">Body Profile & Recommendations</div>
+            <div class="pdf-stat-grid" style="grid-template-columns: 1fr 1fr 1fr 1fr;">
+              <div class="pdf-stat-card"><div class="lbl">BMI Score</div><div class="v">${bmi}</div></div>
+              <div class="pdf-stat-card"><div class="lbl">Category</div><div class="v" style="font-size:18px; margin-top:14px;">${bmiCat}</div></div>
+              <div class="pdf-stat-card"><div class="lbl">Height</div><div class="v" style="font-size:20px; margin-top:12px;">${appData.bmi.height} cm</div></div>
+              <div class="pdf-stat-card"><div class="lbl">Weight</div><div class="v" style="font-size:20px; margin-top:12px;">${appData.bmi.weight} kg</div></div>
+            </div>
+            <div class="pdf-insight" style="background:#f4f4f5; border-left-color:#52525b; margin-bottom: 30px;"><strong>Actionable Guidance</strong><br/>${suggestionStr}</div>
+            `;
+        }
 
-    html += `
-    <div class="pdf-page">
-      ${pdfPageHeader(pageNum++)}
-      <div class="pdf-section-label">04 · Wellness snapshot</div>
-      <div class="pdf-h1">Wellness snapshot</div>
-      <div class="pdf-stat-grid" style="grid-template-columns: 1fr 1fr;">
-        <div class="pdf-stat-card"><div class="lbl">BMI</div><div class="v">${bmi}</div><div style="font-size:12px; color:#52525b; margin-top:4px; font-weight:600;">${bmiCat}</div></div>
-        <div class="pdf-stat-card"><div class="lbl">Hydration today</div><div class="v">${waterPct}%</div><div style="font-size:12px; color:#52525b; margin-top:4px; font-weight:600;">${waterToday} / ${waterGoal} ml</div></div>
-      </div>
-      <div class="pdf-h2">Profile</div>
-      <div style="display:grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; margin-bottom: 24px;">
-        <div class="pdf-stat-card"><div class="lbl">Height</div><div class="v" style="font-size:18px">${appData.bmi.height} cm</div></div>
-        <div class="pdf-stat-card"><div class="lbl">Weight</div><div class="v" style="font-size:18px">${appData.bmi.weight} kg</div></div>
-        <div class="pdf-stat-card"><div class="lbl">Age</div><div class="v" style="font-size:18px">${appData.bmi.age}</div></div>
-        <div class="pdf-stat-card"><div class="lbl">Activity</div><div class="v" style="font-size:15px; text-transform: capitalize;">${ {low:'Sedentary', mod:'Moderate', high:'Active'}[appData.water.activity] }</div></div>
-      </div>
-      <div class="pdf-insight" style="background:#ecfdf5; border-left-color:#10b981;"><strong>Recommendation</strong><br/>Target <strong>${waterGoal} ml</strong> water/day based on weight, activity (${appData.water.activity}) and climate (${appData.water.climate}). Your current BMI category is <strong>${bmiCat}</strong> — see the in-app wellness tab for specific diet and exercise guidance.</div>
-      ${pdfPageFooter()}
-    </div>`;
+        if (appData.water.enabled) {
+            const todayPdf = getFormatDate(new Date());
+            const waterToday = (appData.water.byDay && appData.water.byDay[todayPdf]) || 0;
+            const waterGoal = appData.water.goalMl || 2500;
+            const waterPct = Math.min(100, Math.round((waterToday/waterGoal)*100));
+            
+            html += `
+            <div class="pdf-h2" style="margin-top:10px;">Hydration Tracking</div>
+            <div class="pdf-stat-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+              <div class="pdf-stat-card"><div class="lbl">Daily Goal</div><div class="v">${waterGoal} ml</div></div>
+              <div class="pdf-stat-card"><div class="lbl">Intake Today</div><div class="v">${waterToday} ml</div></div>
+              <div class="pdf-stat-card"><div class="lbl">Completion</div><div class="v">${waterPct}%</div></div>
+            </div>
+            <div class="pdf-insight" style="background:#e0f2fe; border-left-color:#0ea5e9;"><strong>Hydration Insight</strong><br/>Your current goal is optimized for a <strong>${appData.water.climate}</strong> climate and a <strong>${appData.water.activity}</strong> activity level. Based on your current weight, consistently hitting this target is essential for optimal cognitive and physical performance.</div>
+            `;
+        }
+        
+        html += pdfPageFooter() + `</div>`;
+    }
 
     // FINAL WISHES PAGE
     html += `
